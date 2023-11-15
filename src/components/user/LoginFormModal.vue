@@ -6,7 +6,7 @@ const dialog = ref(false);
   <v-row justify="center">
     <v-dialog v-model="dialog" persistent width="512">
       <template v-slot:activator="{ props }">
-        <v-btn color="primary" v-bind="props"> 로그인 </v-btn>
+        <v-btn v-bind="props"> 로그인 </v-btn>
       </template>
 
       <v-card>
@@ -24,12 +24,22 @@ const dialog = ref(false);
               </v-col>
             </v-row>
           </v-container>
-          <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue-darken-1" variant="text" @click="dialog = false"> Close </v-btn>
-          <v-btn color="blue-darken-1" variant="text" @click="dialog = false"> Save </v-btn>
+          <v-container>
+            <v-row>
+              <v-col class="text-center">
+                <v-btn variant="text" @click="dialog = false"> Login </v-btn>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col class="text-center">
+                <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
+                  Register
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-container>
         </v-card-actions>
       </v-card>
     </v-dialog>
