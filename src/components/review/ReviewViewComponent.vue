@@ -5,22 +5,22 @@ const props = defineProps({
   contents: String,
   rating: Number,
   imgSrc: String,
+  profileSrc: String,
 });
-const avatarSize = 30;
 </script>
 
 <template>
   <div>
-    <v-container fluid>
+    <v-container class="pa-5" fluid>
       <v-row>
         <v-col cols="3" class="d-flex justify-center">
           <!-- 사용자 프로필 -->
-          <v-avatar :size="avatarSize" color="red">
-            <template v-if="props.imgSrc == null || props.imgSrc == undefined">
+          <v-avatar color="red">
+            <template v-if="props.profileSrc == null || props.profileSrc == undefined">
               <span class="text-h5">{{ props.userName.substring(0, 1) }}</span>
             </template>
             <template v-else>
-              <v-img :src="props.imgSrc" :alt="props.userName" />
+              <v-img :src="props.profileSrc" :alt="props.userName" />
             </template>
           </v-avatar>
         </v-col>
@@ -32,7 +32,7 @@ const avatarSize = 30;
               <!-- 사용자 이름 -->
               <div class="user-name">{{ props.userName }}</div>
             </v-col>
-            <v-col class="d-flex pa-1 align-end justify-end">
+            <v-col class="d-flex align-end justify-end">
               <!-- 작성 시간 -->
               <div class="date">{{ props.createdDate }}</div>
             </v-col>
@@ -44,6 +44,8 @@ const avatarSize = 30;
           <!-- 별점 -->
           <v-rating
             :length="5"
+            size="x-large"
+            density="comfortable"
             :model-value="props.rating"
             color="orange"
             active-color="orange-lighten-1"
