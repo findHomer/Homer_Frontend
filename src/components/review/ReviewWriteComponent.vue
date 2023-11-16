@@ -8,19 +8,24 @@ const contents = ref("");
   <div>
     <v-container fluid>
       <v-row>
-        <div class="text-h5">리뷰 작성</div>
+        <v-col>
+          <div class="text-h5">리뷰 작성</div>
+        </v-col>
       </v-row>
       <v-row>
-        <!-- 별점 -->
-        <v-rating
-          :model-value="rating"
-          color="orange-lighten-1"
-          active-color="orange-lighten-1"
-          readonly
-        ></v-rating>
+        <v-col>
+          <!-- 별점 -->
+          <v-rating
+            :model-value="rating"
+            color="orange-lighten-1"
+            active-color="orange-lighten-1"
+          ></v-rating>
+        </v-col>
       </v-row>
       <v-row>
-        <v-text-field label="내용" name="name" :model-value="contents" textarea></v-text-field>
+        <v-col>
+          <v-textarea label="내용" name="name" :model-value="contents" textarea></v-textarea>
+        </v-col>
       </v-row>
       <v-row class="justify-end">
         <v-col>

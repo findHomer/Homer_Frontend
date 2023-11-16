@@ -1,20 +1,21 @@
 <script setup>
 const props = defineProps({
   userName: String,
-  createdDate: Date,
+  createdDate: String,
   contents: String,
   rating: Number,
   imgSrc: String,
 });
+const avatarSize = 30;
 </script>
 
 <template>
   <div>
     <v-container fluid>
       <v-row>
-        <v-col cols="2">
+        <v-col cols="3" class="d-flex justify-center">
           <!-- 사용자 프로필 -->
-          <v-avatar size="avatarSize" color="red">
+          <v-avatar :size="avatarSize" color="red">
             <template v-if="props.imgSrc == null || props.imgSrc == undefined">
               <span class="text-h5">{{ props.userName.substring(0, 1) }}</span>
             </template>
@@ -29,31 +30,40 @@ const props = defineProps({
           <v-row>
             <v-col>
               <!-- 사용자 이름 -->
-              <div>{{ props.userName }}</div>
+              <div class="user-name">{{ props.userName }}</div>
             </v-col>
-            <v-col>
+            <v-col class="d-flex pa-1 align-end justify-end">
               <!-- 작성 시간 -->
-              <div>{{ props.createdDate }}</div>
+              <div class="date">{{ props.createdDate }}</div>
             </v-col>
-          </v-row>
-          <v-row>
-            <!-- 별점 -->
-            <v-rating
-              :model-value="props.rating"
-              color="orange-lighten-1"
-              active-color="orange-lighten-1"
-              readonly
-            ></v-rating>
           </v-row>
         </v-col>
       </v-row>
       <v-row>
-        <template v-if="props.contents != null && props.contents != undefined">
-          <v-card :text="props.contents" variant="outlined"> </v-card>
-        </template>
+        <v-col class="d-flex justify-center">
+          <!-- 별점 -->
+          <v-rating
+            :length="5"
+            :model-value="props.rating"
+            color="orange"
+            active-color="orange-lighten-1"
+            readonly
+          />
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col class="justify-center">
+          <template v-if="props.contents != null && props.contents != undefined">
+            <v-card :text="props.contents" variant="outlined"> </v-card>
+          </template>
+        </v-col>
       </v-row>
     </v-container>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.date {
+  font-size: 0.7rem;
+}
+</style>
