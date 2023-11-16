@@ -1,7 +1,7 @@
 <script setup>
 import ReviewViewComponent from "../components/review/ReviewViewComponent.vue";
 import ReviewWriteComponent from "../components/review/ReviewWriteComponent.vue";
-import ReviewCardComponent from "../components/review/ReviewCardComponent.vue";
+// import ReviewCardComponent from "../components/review/ReviewCardComponent.vue";
 const reviews = [
   {
     userName: "test",
@@ -13,14 +13,16 @@ const reviews = [
   {
     userName: "test2",
     createdDate: "2023-03-01",
-    contents: "아주 좋습니다.^^ 굿굿",
+    contents:
+      "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maxime laudantium quas soluta eius rerum. Tempora ut ipsum, atque, ex sequi dignissimos ea officiis esse, molestias ducimus dolorem maxime nostrum nihil?",
     rating: 3,
     imgSrc: null,
   },
   {
     userName: "test3",
     createdDate: "2023-03-01",
-    contents: "아주 좋습니다.^^ 굿굿",
+    contents:
+      "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maxime laudantium quas soluta eius rerum. Tempora ut ipsum, atque, ex sequi dignissimos ea officiis esse, molestias ducimus dolorem maxime nostrum nihil?",
     rating: 2,
     imgSrc: null,
   },
@@ -28,19 +30,18 @@ const reviews = [
     userName: "test4",
     createdDate: "2023-03-01",
     contents: "아주 좋습니다.^^ 굿굿",
-    rating: 3,
+    rating: 4,
     imgSrc: null,
   },
   {
     userName: "test5",
     createdDate: "2023-03-01",
     contents: "아주 좋습니다.^^ 굿굿",
-    rating: 3,
+    rating: 5,
     imgSrc: null,
   },
 ];
 </script>
-
 <template>
   <v-container fluid>
     <v-row>
