@@ -1,9 +1,43 @@
 <script setup>
 // 타인 말풍선 컴포넌트
+
+import ProfileComponent from "../layout/ProfileComponent.vue";
+
+const props = defineProps({
+  profileUrl: String,
+  name: String,
+  content: String,
+});
 </script>
 
 <template>
-  <div></div>
+  <div>
+    <v-row>
+      <!-- 프로필사진 -->
+      <v-col cols="1" class="d-flex align-end">
+        <ProfileComponent :profile-url="profileUrl" :user-name="props.name" :avatar-size="30" />
+      </v-col>
+      <v-col>
+        <!-- 이름  -->
+        <v-row>
+          <v-col>{{ props.name }}</v-col>
+        </v-row>
+        <!-- 내용 -->
+        <v-row>
+          <v-col>
+            <span class="chat-bubble">
+              {{ props.content }}
+            </span>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.chat-bubble {
+  border: 1px lightgray solid;
+  border-radius: 1rem;
+}
+</style>
