@@ -7,8 +7,11 @@ const chatrooms = [
   { id: 2, name: "SSAFY 멀티캠퍼스 역삼점" },
 ];
 
+const emit = defineEmits(["enter"]);
+
 const enter = (id) => {
   console.log("enter the room : ", id);
+  emit("enter", id);
 };
 </script>
 
