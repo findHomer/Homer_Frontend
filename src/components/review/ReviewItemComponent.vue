@@ -1,11 +1,12 @@
 <script setup>
+import ProfileComponent from "../layout/ProfileComponent.vue";
 const props = defineProps({
   userName: String,
   createdDate: String,
   contents: String,
   rating: Number,
   imgSrc: String,
-  profileSrc: String,
+  profileUrl: String,
 });
 </script>
 
@@ -15,14 +16,11 @@ const props = defineProps({
       <v-row>
         <v-col cols="3" class="d-flex justify-center">
           <!-- 사용자 프로필 -->
-          <v-avatar color="red">
-            <template v-if="props.profileSrc == null || props.profileSrc == undefined">
-              <span class="text-h5">{{ props.userName.substring(0, 1) }}</span>
-            </template>
-            <template v-else>
-              <v-img :src="props.profileSrc" :alt="props.userName" />
-            </template>
-          </v-avatar>
+          <ProfileComponent
+            :profile-url="props.profileSrc"
+            :avatar-size="30"
+            :user-name="props.userName"
+          />
         </v-col>
 
         <!-- 사용자 이름 및 작성 시간, 별점-->
