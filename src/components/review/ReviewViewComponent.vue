@@ -1,71 +1,79 @@
 <script setup>
-const props = defineProps({
-  userName: String,
-  createdDate: String,
-  contents: String,
-  rating: Number,
-  imgSrc: String,
-  profileSrc: String,
-});
+import ReviewViewComponent from "./ReviewItemComponent.vue";
+import ReviewWriteComponent from "./ReviewWriteComponent.vue";
+// import ReviewCardComponent from "../components/review/ReviewCardComponent.vue";
+const reviews = [
+  {
+    userName: "test",
+    createdDate: "2023-03-01",
+    contents: "아주 좋습니다.^^ 굿굿",
+    rating: 1,
+    imgSrc: null,
+  },
+  {
+    userName: "test2",
+    createdDate: "2023-03-01",
+    contents:
+      "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maxime laudantium quas soluta eius rerum. Tempora ut ipsum, atque, ex sequi dignissimos ea officiis esse, molestias ducimus dolorem maxime nostrum nihil?",
+    rating: 3,
+    imgSrc: null,
+  },
+  {
+    userName: "test3",
+    createdDate: "2023-03-01",
+    contents:
+      "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maxime laudantium quas soluta eius rerum. Tempora ut ipsum, atque, ex sequi dignissimos ea officiis esse, molestias ducimus dolorem maxime nostrum nihil?",
+    rating: 2,
+    imgSrc: null,
+  },
+  {
+    userName: "test4",
+    createdDate: "2023-03-01",
+    contents: "아주 좋습니다.^^ 굿굿",
+    rating: 4,
+    imgSrc: null,
+  },
+  {
+    userName: "test5",
+    createdDate: "2023-03-01",
+    contents: "아주 좋습니다.^^ 굿굿",
+    rating: 5,
+    imgSrc: null,
+  },
+];
 </script>
-
 <template>
-  <div>
-    <v-container class="pa-5" fluid>
+  <v-container fluid>
+    <v-row>
+      <v-col>
+        <ReviewWriteComponent />
+      </v-col>
+    </v-row>
+    <v-divider :thickness="2" class="my-6"></v-divider>
+    <!-- <v-row>
+      <v-col> <ReviewCardComponent /></v-col>
+    </v-row> -->
+    <v-row>
+      <v-col>
+        <div class="text-h6 mb-6">리뷰 목록</div>
+      </v-col>
+    </v-row>
+    <v-divider class="mx-8"></v-divider>
+    <v-virtual-scroll :items="reviews" height="700">
+      <template v-slot:default="review">
+        <v-row>
+          <v-col>
+            <ReviewViewComponent v-bind="review.item" />
+          </v-col>
+        </v-row>
+      </template>
+    </v-virtual-scroll>
+    <!-- <template v-for="review in reviews" :key="review.createDate">
       <v-row>
-        <v-col cols="3" class="d-flex justify-center">
-          <!-- 사용자 프로필 -->
-          <v-avatar color="red">
-            <template v-if="props.profileSrc == null || props.profileSrc == undefined">
-              <span class="text-h5">{{ props.userName.substring(0, 1) }}</span>
-            </template>
-            <template v-else>
-              <v-img :src="props.profileSrc" :alt="props.userName" />
-            </template>
-          </v-avatar>
-        </v-col>
-
-        <!-- 사용자 이름 및 작성 시간, 별점-->
-        <v-col>
-          <v-row>
-            <v-col>
-              <!-- 사용자 이름 -->
-              <div class="user-name">{{ props.userName }}</div>
-            </v-col>
-            <v-col class="d-flex align-end justify-end">
-              <!-- 작성 시간 -->
-              <div class="date">{{ props.createdDate }}</div>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col class="d-flex justify-center">
-          <!-- 별점 -->
-          <v-rating
-            :length="5"
-            size="x-large"
-            density="comfortable"
-            :model-value="props.rating"
-            color="orange"
-            active-color="orange-lighten-1"
-            readonly
-          />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col class="justify-center">
-          <template v-if="props.contents != null && props.contents != undefined">
-            <v-card :text="props.contents" variant="outlined"> </v-card>
-          </template>
-        </v-col>
-      </v-row>
-    </v-container>
-  </div>
+        <ReviewViewComponent v-bind="review" />
+      </v-row> -->
+    <!-- </template> -->
+  </v-container>
 </template>
 
-<style scoped>
-.date {
-  font-size: 0.7rem;
-}
-</style>
+<style scoped></style>
