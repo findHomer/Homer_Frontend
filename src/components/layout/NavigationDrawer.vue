@@ -1,5 +1,7 @@
 <script setup>
 import { ref } from "vue";
+import ApartDetailComponent from "../detail/ApartDetailComponent.vue";
+import SearchBarComponent from "../detail/SearchBarComponent.vue";
 const drawer = ref(null);
 const links = [
   ["mdi-inbox-arrow-down", "Inbox"],
@@ -10,7 +12,7 @@ const links = [
 </script>
 
 <template>
-  <v-navigation-drawer v-model="drawer">
+  <v-navigation-drawer width="400" v-model="drawer">
     <v-sheet color="grey-lighten-4" class="pa-4">
       <v-avatar class="mb-4" color="grey-darken-1" size="64"></v-avatar>
 
@@ -28,7 +30,13 @@ const links = [
         link
       ></v-list-item>
     </v-list>
+    <SearchBarComponent/>
+    <ApartDetailComponent/>
   </v-navigation-drawer>
+
+  
 </template>
 
-<style scoped></style>
+<style scoped>
+
+</style>

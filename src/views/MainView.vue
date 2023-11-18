@@ -7,6 +7,7 @@ import NavigationDrawer from "../components/layout/NavigationDrawer.vue";
 <template>
   <v-app id="inspire">
     <HeadingNavbar />
+    
     <NavigationDrawer />
     <KakaoMapComponent />
     <RouterView />
