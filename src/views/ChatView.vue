@@ -34,7 +34,7 @@ watch(select, () => {
 </script>
 
 <template>
-  <v-container class="h-100">
+  <v-container fluid>
     <v-row>
       <v-fab-transition>
         <v-btn

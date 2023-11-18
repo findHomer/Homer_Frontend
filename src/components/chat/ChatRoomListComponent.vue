@@ -1,5 +1,4 @@
 <script setup>
-import ChatRoomListItemComponent from "./ChatRoomListItemComponent.vue";
 
 // mock for test
 const chatrooms = [
@@ -8,7 +7,7 @@ const chatrooms = [
     name: "SSAFY 멀티캠퍼스 역삼점",
     profileUrl: "https://www.ssafy.com/swp/rps/images/campus_seoul.png",
     lastUpdated: "2023-04-01 15:23:12",
-    lastChat: "안녕하세요!! ^^",
+    lastChat: "안녕하세요!! ^^ 서울에서 저희 본가까지 거리가 긴데 시간이 얼마나 걸릴까요?",
     lastChatter: "백빵돌이",
   },
   {
@@ -16,7 +15,7 @@ const chatrooms = [
     name: "SSAFY 멀티캠퍼스 역삼점",
     profileUrl: "https://www.ssafy.com/swp/rps/images/campus_seoul.png",
     lastUpdated: "2023-04-01 15:23:12",
-    lastChat: "안녕하세요!! ^^",
+    lastChat: "안녕하세요!! ^^ 서울에서 저희 본가까지 거리가 긴데 시간이 얼마나 걸릴까요?",
     lastChatter: "백빵돌이",
   },
 ];
@@ -35,12 +34,21 @@ const enter = (id) => {
       <v-col class="d-flex justify-center">채팅방 목록</v-col>
     </v-row>
 
-    <template v-for="chatroom in chatrooms" :key="chatroom.id">
-      <v-row>
-        <v-col><ChatRoomListItemComponent v-bind="chatroom" @click="enter(chatroom.id)" /> </v-col>
-      </v-row>
+    <v-list lines="two">
+
+      <template v-for="chatroom in chatrooms" :key="chatroom.id">
+      
+      <v-list-item
+      :title="chatroom.name"
+      :subtitle="chatroom.lastChat ? `${chatroom.lastChatter} : ${chatroom.lastChat}` : undefined"
+      :prepend-avatar="chatroom.profileUrl"
+      @click="enter(chatroom.id)"
+      ></v-list-item>
+
       <v-divider></v-divider>
     </template>
+    </v-list>
+  
   </v-container>
   <div></div>
 </template>
