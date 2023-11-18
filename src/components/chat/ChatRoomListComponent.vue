@@ -37,7 +37,6 @@ const enter = (id) => {
     <v-list lines="two">
 
       <template v-for="chatroom in chatrooms" :key="chatroom.id">
-      
       <v-list-item
       :title="chatroom.name"
       :subtitle="chatroom.lastChat ? `${chatroom.lastChatter} : ${chatroom.lastChat}` : undefined"
