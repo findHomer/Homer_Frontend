@@ -41,12 +41,11 @@ watch(select, () => {
   }
 });
 
-const chatWidth = ref(400);
+const chatWidth = ref(450);
 
 const cssChatWidth = computed(() => {
   return `${chatWidth.value + 50}px`;
 });
-
 </script>
 
 <template>
@@ -71,7 +70,6 @@ const cssChatWidth = computed(() => {
         :class="btnClass"
         @click.stop="selection"
       >
-
         <v-container class="pa-1" fluid>
           <v-row>
             <v-col>
@@ -87,14 +85,16 @@ const cssChatWidth = computed(() => {
         </v-container>
       </v-btn>
 
-      <!-- chat id 처리 하기 -->
-      <template v-if="!isChat">
-        <chat-room-list-component />
-      </template>
+      <v-layout fill-height>
+        <!-- chat id 처리 하기 -->
+        <template v-if="!isChat">
+          <chat-room-list-component />
+        </template>
 
-      <template v-else>
-        <ChatRoomInsideComponent />
-      </template>
+        <template v-else>
+          <ChatRoomInsideComponent />
+        </template>
+      </v-layout>
     </v-navigation-drawer>
   </v-app>
 </template>
