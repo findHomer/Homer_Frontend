@@ -1,4 +1,8 @@
 <script setup>
+import { useChatRoomStore } from "@/stores/chatroom";
+
+const store = useChatRoomStore();
+const { enterRoom } = store;
 
 // mock for test
 const chatrooms = [
@@ -12,7 +16,7 @@ const chatrooms = [
   },
   {
     id: 2,
-    name: "SSAFY 멀티캠퍼스 역삼점",
+    name: "SSAFY 멀티캠퍼스 역삼점2",
     profileUrl: "https://www.ssafy.com/swp/rps/images/campus_seoul.png",
     lastUpdated: "2023-04-01 15:23:12",
     lastChat: "안녕하세요!! ^^ 서울에서 저희 본가까지 거리가 긴데 시간이 얼마나 걸릴까요?",
@@ -20,12 +24,6 @@ const chatrooms = [
   },
 ];
 
-const emit = defineEmits(["enter"]);
-
-const enter = (id) => {
-  console.log("enter the room : ", id);
-  emit("enter", id);
-};
 </script>
 
 <template>
@@ -35,14 +33,13 @@ const enter = (id) => {
     </v-row>
 
     <v-list lines="two">
-
       <template v-for="chatroom in chatrooms" :key="chatroom.id">
       <v-list-item
       :title="chatroom.name"
       :subtitle="chatroom.lastChat ? `${chatroom.lastChatter} : ${chatroom.lastChat}` : undefined"
       :prepend-avatar="chatroom.profileUrl"
-      @click="enter(chatroom.id)"
-      ></v-list-item>
+      @click="enterRoom(chatroom.id, chatroom.name)">
+      </v-list-item>
 
       <v-divider></v-divider>
     </template>
