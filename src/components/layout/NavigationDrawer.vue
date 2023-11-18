@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from "vue";
-const drawer = ref(null);
+const drawer = ref(true);
 const links = [
   ["mdi-inbox-arrow-down", "Inbox"],
   ["mdi-send", "Send"],
@@ -10,7 +10,7 @@ const links = [
 </script>
 
 <template>
-  <v-navigation-drawer v-model="drawer">
+  <v-navigation-drawer v-model="drawer" disable-resize-watcher :scrim="false">
     <v-sheet color="grey-lighten-4" class="pa-4">
       <v-avatar class="mb-4" color="grey-darken-1" size="64"></v-avatar>
 
