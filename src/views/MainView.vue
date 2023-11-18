@@ -2,6 +2,7 @@
 import HeadingNavbar from "../components/layout/HeadingNavbar.vue";
 import KakaoMapComponent from "@/components/map/KakaoMapComponent.vue";
 import NavigationDrawer from "../components/layout/NavigationDrawer.vue";
+import ChatView from "@/views/ChatView.vue"
 </script>
 
 <template>
@@ -9,6 +10,6 @@ import NavigationDrawer from "../components/layout/NavigationDrawer.vue";
     <HeadingNavbar />
     <NavigationDrawer />
     <KakaoMapComponent />
-    <RouterView />
+    <ChatView/>
   </v-app>
 </template>
