@@ -133,6 +133,8 @@ const load = async ({ done }) => {
     </v-row>
 
     <v-list lines="two">
+
+    <v-list lines="two">
       <v-infinite-scroll :height="500" :items="chats" :onLoad="load" empty-text="">
         <template v-for="chatroom in chatrooms" :key="chatroom.id">
           <v-list-item
