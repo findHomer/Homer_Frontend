@@ -55,12 +55,14 @@ const cssChatWidth = computed(() => {
     <KakaoMapComponent />
 
     <v-navigation-drawer
-      ref="chatDrawer"
       v-model="select"
       location="right"
       :scrim="false"
       :width="chatWidth"
+      color="rgba(0, 0, 255, 0.0)"
       disable-resize-watcher
+      border="0"
+      elevation="0"
     >
       <v-btn
         class="chat-btn"
@@ -85,16 +87,19 @@ const cssChatWidth = computed(() => {
         </v-container>
       </v-btn>
 
-      <v-layout fill-height>
-        <!-- chat id 처리 하기 -->
-        <template v-if="!isChat">
-          <chat-room-list-component />
-        </template>
+      <v-container class="d-flex align-end h-100">
+          <v-card height="700" class="rounded-xl">
+              <!-- chat id 처리 하기 -->
+              <template v-if="!isChat">
+                <chat-room-list-component />
+              </template>
 
-        <template v-else>
-          <ChatRoomInsideComponent />
-        </template>
-      </v-layout>
+              <template v-else>
+                <ChatRoomInsideComponent />
+              </template>
+          </v-card>
+       
+      </v-container>
     </v-navigation-drawer>
   </v-app>
 </template>

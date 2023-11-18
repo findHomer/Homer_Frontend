@@ -1,3 +1,4 @@
+`
 <script setup>
 import { useChatRoomStore } from "@/stores/chatroom";
 import { storeToRefs } from "pinia";
@@ -29,14 +30,16 @@ chats.value = [
     userId: 3,
     name: "헬로월드",
     content: "안녕하세요!!",
-    profileUrl: "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=400",
+    profileUrl:
+      "https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=400",
   },
   {
     chatId: 3,
     userId: 2,
     name: "신예지",
     content: "무엇이 궁금하신가요?",
-    profileUrl: "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    profileUrl:
+      "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   },
   {
     chatId: 4,
@@ -46,11 +49,10 @@ chats.value = [
     profileUrl: "https://www.ssafy.com/swp/rps/images/campus_seoul.png",
   },
 ];
-
 </script>
 
 <template>
-  <v-container fill-height>
+  <v-container class="h-100">
     <v-row>
       <v-col cols="2">
         <v-icon @click="exitRoom">mdi-arrow-left</v-icon>
@@ -65,28 +67,18 @@ chats.value = [
       </v-col>
     </v-row>
 
-    <!-- <template v-for="chat in chats" :key="chat.chatId">
-      <v-row>
-        <v-col>
-          <ChatBubbleMeComponent v-if="chat.userId == userId" v-bind="chat" />
-          <ChatBubbleOthersComponent v-else v-bind="chat" />
-        </v-col>
-      </v-row>
-    </template> -->
     <template v-for="chat in chats" :key="chat.chatId">
-      <v-list-item v-if="chat.userId == userId"  >
-        <ChatBubbleMeComponent v-bind="chat"/>
+      <v-list-item v-if="chat.userId == userId">
+        <ChatBubbleMeComponent v-bind="chat" />
       </v-list-item>
       <v-list-item v-else :prepend-avatar="chat.profileUrl" :title="chat.name">
         <ChatBubbleOthersComponent v-bind="chat" />
       </v-list-item>
     </template>
-    <v-row>
-      <v-col>
-        <ChatInputComponent />
-      </v-col>
-    </v-row>
+
+    <ChatInputComponent bottom/>
   </v-container>
 </template>
 
 <style scoped></style>
+`
