@@ -51,6 +51,7 @@ const cssChatWidth = computed(() => {
 <template>
   <v-app id="inspire">
     <HeadingNavbar />
+    
     <NavigationDrawer />
     <KakaoMapComponent />
 
