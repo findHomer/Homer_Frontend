@@ -1,5 +1,7 @@
 <script setup>
-import { ref,computed,inject } from 'vue';
+import { ref,computed,inject,watch } from 'vue';
+import { useUserStore } from '../stores/user-store';
+
 
 import {
   Chart as ChartJS,
@@ -13,6 +15,9 @@ import {
 } from 'chart.js'
 import { Line } from 'vue-chartjs'
 import { onMounted } from 'vue';
+
+const store = useUserStore();
+
 
 ChartJS.register(
   CategoryScale,
@@ -67,10 +72,30 @@ const items = ref({
     dongCount: "",
     parkPerHouse: ""
 });
-const aptId= "A13380803"
+// const aptId= "A13380803"
 
-const details = async() => {
-    await axios.get(`/apartments/details?aptId=${aptId}`)
+// const details = async() => {
+//     await axios.get(`/apartments/details?aptId=${aptId}`)
+//     .then((response => {
+//         items.value.aisleType = response.data.aisleType
+//         items.value.maxFloor = response.data.maxFloor ? "최고"+response.data.maxFloor+"층" : "";
+//         items.value.householdCount = response.data.householdCount ? response.data.householdCount + "세대" : "";
+//         items.value.dongCount = response.data.dongCount ? response.data.dongCount+"동" : "";
+//         items.value.parkPerHouse= response.data.parkPerHouse ?"세대당"+response.data.parkPerHouse+"대" : "";
+
+//         dealInfos=response.data.dealInfos
+//         tab.value=0
+//         console.log(dealInfos);
+//     }))
+// }
+
+
+onMounted(()=>{
+    //details()
+
+    watch(store.aptId, async()=>{
+  console.log(store.aptId)
+  await axios.get(`/apartments/details?aptId=${aptId}`)
     .then((response => {
         items.value.aisleType = response.data.aisleType
         items.value.maxFloor = response.data.maxFloor ? "최고"+response.data.maxFloor+"층" : "";
@@ -82,10 +107,7 @@ const details = async() => {
         tab.value=0
         console.log(dealInfos);
     }))
-}
-
-onMounted(()=>{
-    details()
+})
 }
     
 )
