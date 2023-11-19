@@ -1,10 +1,12 @@
 <script setup>
 import { onMounted } from "vue";
 import { ref,computed,inject } from 'vue';
-const { VITE_KAKAO_APP_KEY } = import.meta.env;
+import {useUserStore} from '@/components/stores/user-store';
 
+const { VITE_KAKAO_APP_KEY } = import.meta.env;
+const store = useUserStore()
 const markers = [];//마커들 관리하는 테이블
-const markerMapping={};//마커와 id 매핑하는 테이블
+const markerMapping=new Map();//마커와 id 매핑하는 테이블
 const axios = inject('axios')
 
 const initMap = async() => {
@@ -14,19 +16,35 @@ const initMap = async() => {
     level: 5,
   }; //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
   const map = new kakao.maps.Map(container, options);
-  await axios.get(`/apartments`)
-    .then((response => {
-        console.log(response);
-        response.data.forEach(element => {
-          var marker = new kakao.maps.Marker({
-            position : new kakao.maps.LatLng(element.lat,element.lng),
-            title: element.aptName
-          });
+  kakao.maps.event.addListener(map, 'tilesloaded', async()=> {             
+    for(var i =0 ;i<markers.length;i++){
+      markers[i].setMap(null);
+    }
+    markers.splice(0,markers.length)
+    markerMapping.clear();
+    // 지도 영역정보를 얻어옵니다 
+    var bounds = map.getBounds();
+   // console.log(bounds.ha)
+    // 영역정보의 남서쪽 정보를 얻어옵니다 
+    var swLatlng = bounds.getSouthWest();
+    
+    // 영역정보의 북동쪽 정보를 얻어옵니다 
+    var neLatlng = bounds.getNorthEast();
+    const response = await axios.get(`/apartments/locations/maps?startLat=${bounds.qa}&endLat=${bounds.pa}&startLng=${bounds.ha}&endLng=${bounds.oa}`)
+    //console.log(response);
+      response.data.forEach(element => {
+        var marker = new kakao.maps.Marker({
+          position : new kakao.maps.LatLng(element.lat,element.lng),
+          title: element.aptName
+        });
           marker.setMap(map);
-          markerMapping[marker]=element.aptId
+          markerMapping.set(marker,element.aptId)
           
           kakao.maps.event.addListener(marker,'click',function(){
-            clickApart(markerMapping[marker])
+            
+            store.aptId= markerMapping.get(marker)
+         //   console.log(store.aptId);
+            // clickApart(markerMapping[marker])
           })
           
           markers.push(marker)
@@ -34,15 +52,17 @@ const initMap = async() => {
 
 
         });
-    }))
+
+    })
+   
+  
+  
 
 
   
 };
 
-const clickApart = async() =>{
-  //아파트상세정보
-}
+
 
 
 onMounted(async () => {
