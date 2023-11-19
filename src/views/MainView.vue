@@ -88,7 +88,7 @@ const cssChatWidth = computed(() => {
       </v-btn>
 
       <v-container class="d-flex align-end h-100">
-          <v-card height="700" class="rounded-xl">
+          <v-card height="600" class="rounded-xl">
               <!-- chat id 처리 하기 -->
               <template v-if="!isChat">
                 <chat-room-list-component />
