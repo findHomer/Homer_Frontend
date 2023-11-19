@@ -16,6 +16,8 @@ export const useUserStore = defineStore('userStore', () => {
         { name: '로그아웃', show: false, routeName: 'logout' }
     ])
 
+    const aptId= ref('1');
+
     const changeMenuState = () => {
         menuList.value.forEach(menu => {
             menu.show = !menu.show
@@ -73,7 +75,8 @@ export const useUserStore = defineStore('userStore', () => {
         logout,
         modify,
         withdrawal,
-        menuList
+        menuList,
+        aptId
     }
 },
     {
