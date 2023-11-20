@@ -3,10 +3,11 @@ import { httpStatusCode } from './http-status'
 
 const { VITE_SERVER_URL } = import.meta.env
 
-// Refresh Token을 주고 받기 위한 설정.
+function localAxios(){
+    // Refresh Token을 주고 받기 위한 설정.
 // CORS 정책을 허용한다. => 다른 주소의 요청을 방지
 // https://axios-http.com/docs/req_config
-export const instance = axios.create({
+const instance = axios.create({
     baseURL: VITE_SERVER_URL,
     withCredentials: true
 })
@@ -67,4 +68,9 @@ instance.interceptors.response.use((response) => {
     }
 
     return Promise.reject(error)
-})
+    }
+);
+return instance;
+}
+
+export {localAxios};
