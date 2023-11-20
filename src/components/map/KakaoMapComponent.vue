@@ -1,13 +1,14 @@
 <script setup>
 import { onMounted } from "vue";
-import { ref,computed,inject } from 'vue';
+// import { ref,computed,inject } from 'vue';
 import {useUserStore} from '@/components/stores/user-store';
+import { getMarkers } from "@/api/map";
 
 const { VITE_KAKAO_APP_KEY } = import.meta.env;
 const store = useUserStore()
 //const markers = [];//마커들 관리하는 테이블
 const markerMapping=new Map();//마커와 id 매핑하는 테이블
-const axios = inject('axios')
+// const axios = inject('axios')
 
 const initMap = async() => {
   const container = document.getElementById("map");
@@ -34,7 +35,7 @@ const initMap = async() => {
     // 지도 영역정보를 얻어옴
     var bounds = map.getBounds();
     
-    const response = await axios.get(`/apartments/locations/maps?startLat=${bounds.qa}&endLat=${bounds.pa}&startLng=${bounds.ha}&endLng=${bounds.oa}`)
+    const response = await getMarkers(bounds);
     
     const newMarkerIds = new Set(response.data.map(item => item.aptId));
     //기존 마커 업데이트
