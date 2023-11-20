@@ -131,9 +131,6 @@ const load = async ({ done }) => {
     <v-row>
       <v-col class="d-flex justify-center">채팅방 목록</v-col>
     </v-row>
-
-    <v-list lines="two">
-
     <v-list lines="two">
       <v-infinite-scroll :height="500" :items="chats" :onLoad="load" empty-text="">
         <template v-for="chatroom in chatrooms" :key="chatroom.id">
