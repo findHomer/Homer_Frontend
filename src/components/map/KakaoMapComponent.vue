@@ -5,7 +5,7 @@ import {useUserStore} from '@/components/stores/user-store';
 
 const { VITE_KAKAO_APP_KEY } = import.meta.env;
 const store = useUserStore()
-const markers = [];//마커들 관리하는 테이블
+//const markers = [];//마커들 관리하는 테이블
 const markerMapping=new Map();//마커와 id 매핑하는 테이블
 const axios = inject('axios')
 
@@ -20,21 +20,18 @@ const initMap = async() => {
           map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
           averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
           minLevel: 4, // 클러스터 할 최소 지도 레벨 
-          gridSize: 150, //클러스터에 포함될 격자크기    
+      gridSize: 120, //클러스터에 포함될 격자크기    
+      minClusterSize: 1
           });
   kakao.maps.event.addListener(map, 'tilesloaded', async () => {
 
-
-    
-
-    //markers.splice(0, markers.length)
-   
-    if (map.getLevel() >= 7) {
+    //특정 레벨 이상시 마커 작동 x
+    if (map.getLevel() >= 6) {
       clusterer.clear();
       return;
     }
 
-    // 지도 영역정보를 얻어옵니다 
+    // 지도 영역정보를 얻어옴
     var bounds = map.getBounds();
     
     const response = await axios.get(`/apartments/locations/maps?startLat=${bounds.qa}&endLat=${bounds.pa}&startLng=${bounds.ha}&endLng=${bounds.oa}`)
@@ -45,6 +42,7 @@ const initMap = async() => {
       if (!newMarkerIds.has(id))//기존의 aptId는 사라지지않게하여 다시 렌더링 방지
       {
         marker.setMap(null);
+        clusterer.removeMarker(marker)
         markerMapping.delete(id);
       }
        
@@ -62,11 +60,12 @@ const initMap = async() => {
       marker.setMap(map);
       markerMapping.set(element.aptId, marker);
      // markerMapping.set(marker, element.aptId)
-      if (map.getLevel() < 4) {
+      
         kakao.maps.event.addListener(marker, 'click', function () {
           store.aptId = element.aptId; //markerMapping.get(marker)
+          console.log(store.aptId);
         })
-      }
+      
      
       
 
@@ -96,7 +95,6 @@ onMounted(async () => {
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${VITE_KAKAO_APP_KEY}&libraries=services,clusterer,drawing`;
     document.head.appendChild(script);
 
-    axios.ge
   }
 });
 
