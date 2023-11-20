@@ -1,6 +1,41 @@
 <script setup>
-import {ref} from 'vue'
-const searchName=ref('')
+import { ref,computed,inject,watch,onMounted } from 'vue'
+const searchName = ref('')
+const axios = inject('axios')
+const sido = ref([])
+const sigungu= ref([])
+
+const selectedSido= ref('')
+const getSigungu = async () => {
+    console.log(sido.value);
+    for (let i=0; i<sido.value.length; i++) {
+        if (sido.value.name === selectedSido.value) {
+            const response = await axios.get(`/dongcode/${sido.value.code}/sigungu`)
+            sigungu.value = response.data.map((data) => ({
+                    name: data.name,
+                    code: data.code
+            }));
+            console.log(sigungu)
+            break;
+        }
+    }
+    //시군구 동읍 초기화
+    
+    
+    
+    console.log(sido);
+}
+
+
+onMounted(async() => {
+    const response = await axios.get(`/dongcode/sido`)
+    sido.value = response.data.map((data) => ({
+        name: data.name,
+        code: data.code
+    }));
+    console.log(sido)
+
+});
 </script>
 
 <template>
@@ -15,13 +50,18 @@ const searchName=ref('')
         <v-row>
             <v-col> <v-select
                 label="시도"
-                :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                :items = "sido"
+                item-title="name"
+                item-value="code"
+                v-model="selectedSido"
+                @update:modelValue = "getSigungu"
                 variant="outlined"
             ></v-select>
             </v-col>
             <v-col> <v-select
                 label="시군구"
-                :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                :items="sigungu"
+                @change = "getDongupri"
                 variant="outlined"
             ></v-select>
             </v-col>

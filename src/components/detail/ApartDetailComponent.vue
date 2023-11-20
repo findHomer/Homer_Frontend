@@ -30,14 +30,15 @@ ChartJS.register(
 )
 const axios = inject('axios')
 const tab = ref(null);
-let dealInfos=[]
+const dealInfos=ref([])
 
 
 
 const chartData = computed(() => {
-    if (dealInfos.length > tab.value) {
+  //console.log("변경");
+    if (dealInfos.value.length > tab.value) {
          // 거래 데이터 처리
-        const currentData = dealInfos[tab.value].averageMonthDto;
+        const currentData = dealInfos.value[tab.value].averageMonthDto;
         const chartDataPoints = currentData.map(item => item.average === 0 ? null : item.average);
         const chartLabels = currentData.map(item => item.month);
         
@@ -58,9 +59,7 @@ const chartData = computed(() => {
     }
 });
 
-const keyData = computed(()=>{
-    return 
-})
+
 const options = ref({
   responsive: true,
   maintainAspectRatio: false
@@ -88,22 +87,23 @@ const items = ref({
 //         console.log(dealInfos);
 //     }))
 // }
-
+const aptName=ref('');
 
 onMounted(()=>{
     //details()
 
-    watch(store.aptId, async()=>{
-  console.log(store.aptId)
-  await axios.get(`/apartments/details?aptId=${aptId}`)
+  watch(()=>store.aptId, async()=>{
+  //console.log(store.aptId)
+  await axios.get(`/apartments/details?aptId=${store.aptId}`)
     .then((response => {
+        aptName.value = response.data.aptName
         items.value.aisleType = response.data.aisleType
         items.value.maxFloor = response.data.maxFloor ? "최고"+response.data.maxFloor+"층" : "";
         items.value.householdCount = response.data.householdCount ? response.data.householdCount + "세대" : "";
         items.value.dongCount = response.data.dongCount ? response.data.dongCount+"동" : "";
         items.value.parkPerHouse= response.data.parkPerHouse ?"세대당"+response.data.parkPerHouse+"대" : "";
 
-        dealInfos=response.data.dealInfos
+        dealInfos.value=response.data.dealInfos
         tab.value=0
         console.log(dealInfos);
     }))
@@ -122,9 +122,11 @@ const filteredItems = computed(() => {
                  }, []);
 });
 </script>
-
+ 
 <template>
     <v-container>
+        <v-row>{{ aptName }}</v-row>
+
         <v-row v-for="(group, index) in filteredItems" :key="index">
             <v-col v-for="item in group" :key="item[0]">
                 {{ item[1] }}
@@ -140,7 +142,7 @@ const filteredItems = computed(() => {
       color="deep-purple-accent-4"
       align-tabs="center"
     >
-    <v-tab v-for="(dealInfo,index) in dealInfos" :value="index">{{  dealInfo.exclusiveArea }}</v-tab>
+    <v-tab v-for="(dealInfo,index) in dealInfos"  :key="index">{{  dealInfo.exclusiveArea }}</v-tab>
     </v-tabs>
 
     <v-window v-model="tab">

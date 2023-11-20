@@ -14,23 +14,11 @@ const links = [
 <template>
   <v-navigation-drawer width="400" v-model="drawer">
     <v-sheet color="grey-lighten-4" class="pa-4">
-      <v-avatar class="mb-4" color="grey-darken-1" size="64"></v-avatar>
-
-      <div>john@google.com</div>
+      <SearchBarComponent/>
     </v-sheet>
 
     <v-divider></v-divider>
-
-    <v-list>
-      <v-list-item
-        v-for="[icon, text] in links"
-        :key="icon"
-        :prepend-icon="icon"
-        :title="text"
-        link
-      ></v-list-item>
-    </v-list>
-    <SearchBarComponent/>
+    
     <ApartDetailComponent/>
   </v-navigation-drawer>
 
