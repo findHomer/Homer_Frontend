@@ -3,7 +3,7 @@ import { createPinia } from 'pinia'
 import '@mdi/font/css/materialdesignicons.css'
 import App from './App.vue'
 import router from './router'
-
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 // Vuetify
 import 'vuetify/styles'
 import { createVuetify } from 'vuetify'
@@ -15,10 +15,11 @@ const vuetify = createVuetify({
   components,
   directives,
 })
-
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
 const app = createApp(App)
 app.provide('axios',instance)
-app.use(createPinia())
+app.use(pinia)
 app.use(router)
 app.use(vuetify)
 
