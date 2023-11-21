@@ -15,7 +15,7 @@ const props = defineProps({
         <!-- 채팅방 프로필 -->
         <v-avatar :size="avatarSize" color="red">
           <template v-if="props.imgSrc == null || props.imgSrc == undefined">
-            <span class="text-h5">{{ props.userName.substring(0, 1) }}</span>
+            <span class="text-h5">{{ props.name[0] }}</span>
           </template>
           <template v-else>
             <v-img :src="props.imgSrc" :alt="props.name" />
