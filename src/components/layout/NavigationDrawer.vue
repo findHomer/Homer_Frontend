@@ -8,7 +8,6 @@ const drawer = ref(null);
 <template>
 
   <v-navigation-drawer width="400" v-model="drawer" disable-resize-watcher :scrim="false">
-
     <v-sheet color="grey-lighten-4" class="pa-4">
       <SearchBarComponent/>
     </v-sheet>
