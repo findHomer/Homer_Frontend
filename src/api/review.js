@@ -30,7 +30,8 @@ function modifyReview(review, success, fail){
 }
 
 function deleteReview(reviewId, success, fail){
-    local.delete(`${baseUrl}`, JSON.stringify({"reviewId" : reviewId})).then(success).catch(fail);
+    console.log(reviewId);
+    local.delete(`${baseUrl}`, { params :{"reviewId" : reviewId}}).then(success).catch(fail);
 }
 
 export {
