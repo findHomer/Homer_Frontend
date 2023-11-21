@@ -1,55 +1,80 @@
 <script setup>
-import ReviewViewComponent from "./ReviewItemComponent.vue";
+import ReviewItemComponent from "@/components/review/ReviewItemComponent.vue";
 import ReviewWriteComponent from "./ReviewWriteComponent.vue";
 // import ReviewCardComponent from "../components/review/ReviewCardComponent.vue";
-const reviews = [
-  {
-    userName: "test",
-    createdDate: "2023-03-01",
-    contents: "아주 좋습니다.^^ 굿굿",
-    rating: 1,
-    imgSrc: null,
-  },
-  {
-    userName: "test2",
-    createdDate: "2023-03-01",
-    contents:
-      "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maxime laudantium quas soluta eius rerum. Tempora ut ipsum, atque, ex sequi dignissimos ea officiis esse, molestias ducimus dolorem maxime nostrum nihil?",
-    rating: 3,
-    imgSrc: null,
-  },
-  {
-    userName: "test3",
-    createdDate: "2023-03-01",
-    contents:
-      "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maxime laudantium quas soluta eius rerum. Tempora ut ipsum, atque, ex sequi dignissimos ea officiis esse, molestias ducimus dolorem maxime nostrum nihil?",
-    rating: 2,
-    imgSrc: null,
-  },
-  {
-    userName: "test4",
-    createdDate: "2023-03-01",
-    contents: "아주 좋습니다.^^ 굿굿",
-    rating: 4,
-    imgSrc: null,
-  },
-  {
-    userName: "test5",
-    createdDate: "2023-03-01",
-    contents: "아주 좋습니다.^^ 굿굿",
-    rating: 5,
-    imgSrc: null,
-  },
-];
+import { ref, onMounted, computed } from "vue";
+import { getReviews, deleteReview } from "../../api/review";
+import { localAxios } from "../../util/http-commons";
+import { jwtDecode } from "jwt-decode";
+
+const local = localAxios();
+const token = local.defaults.headers.common['Authorization']
+// const token = "eyJraWQiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoZ2QxMjNAbmF2ZXIuY29tIiwicm9sZXMiOiJST0xFX1VTRVIiLCJpYXQiOjE3MDA1NDY5MDMsImV4cCI6MTcwMDU1MDUwM30.TATq-OYeN-YlRIzkUVWjdW8BTpP0wQlP4Iw_mS9tHI8"
+const userEmail = token ? jwtDecode(token).sub : null;
+
+const props = defineProps({
+  aptId: String,
+});
+
+const reviews = ref([]);
+
+const reviewsByCreatedAt = computed(() => {
+  return reviews.value.toSorted((b, a) => {
+    const a_date = new Date(a.createdAt);
+    const b_date = new Date(b.createdAt);
+
+    if (a_date == b_date) {
+      return a.reviewId - b.reviewId;
+    } else {
+      return a_date - b_date;
+    }
+  });
+});
+
+// const aptId = "A10022970";
+const aptId = props.aptId;
+
+onMounted(() => {
+  // getReviewList(props.aptId);
+  getReviewList(aptId)
+});
+
+const getReviewList = (aptId) => {
+  getReviews(
+    aptId,
+    ({ data }) => {
+      reviews.value = data;
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+};
+
+const deleteMyReview = (reviewId) => {
+  deleteReview(
+    reviewId,
+    ({data}) =>{
+      console.log(data);
+      getReviewList(aptId);
+    },
+    (error) =>{
+      console.log(error);
+    }
+  )
+}
 </script>
 <template>
   <v-container fluid>
-    <v-row>
-      <v-col>
-        <ReviewWriteComponent />
-      </v-col>
-    </v-row>
-    <v-divider :thickness="2" class="my-6"></v-divider>
+    <template v-if="token">
+      <v-row>
+        <v-col>
+          <ReviewWriteComponent :token="token" :apt-id="aptId" @refresh="getReviewList(aptId)" />
+        </v-col>
+      </v-row>
+      <v-divider :thickness="2" class="my-6"></v-divider>
+    </template>
+
     <!-- <v-row>
       <v-col> <ReviewCardComponent /></v-col>
     </v-row> -->
@@ -59,20 +84,24 @@ const reviews = [
       </v-col>
     </v-row>
     <v-divider class="mx-8"></v-divider>
-    <v-virtual-scroll :items="reviews" height="700">
+    <v-virtual-scroll :items="reviewsByCreatedAt" height="700">
       <template v-slot:default="review">
         <v-row>
           <v-col>
-            <ReviewViewComponent v-bind="review.item" />
+            <ReviewItemComponent v-bind="review.item"/>
+            <template v-if="userEmail == review.item.email">
+            <v-row>
+            <v-spacer></v-spacer>
+              <v-col class="d-flex justify-end mx-4">
+                <v-btn class="mx-1" color="red" @click="deleteMyReview(review.item.reviewId)">삭제</v-btn>
+              </v-col>
+            </v-row>
+            
+            </template>
           </v-col>
         </v-row>
       </template>
     </v-virtual-scroll>
-    <!-- <template v-for="review in reviews" :key="review.createDate">
-      <v-row>
-        <ReviewViewComponent v-bind="review" />
-      </v-row> -->
-    <!-- </template> -->
   </v-container>
 </template>
 
