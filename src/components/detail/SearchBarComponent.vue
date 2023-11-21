@@ -1,7 +1,8 @@
 <script setup>
 import { ref, computed, inject, watch, onMounted } from "vue";
-import { getSido, getSigungu, getDongupri, search } from "@/api/search";
+import { getSido, getSigungu, getDongupri } from "@/api/search";
 import { useSearchStore } from "@/stores/search"
+
 const store = useSearchStore();
 
 //시도군 필터
@@ -15,7 +16,12 @@ const selectedButton = ref('');
 const searchName = ref('');
 
 const searchApart = function () {
-    const response = search(searchName,store.searchDto)
+    const code = selectedSido.value + selectedSigungu.value + selectedDongupri.value
+    store.searchNameDto.dongCode = code
+    store.searchNameDto.aptName = searchName.value
+    
+    store.clicked = true;
+    
 }
 const clickBtn = function (btn) {
     if (btn === selectedButton.value) {
@@ -27,7 +33,7 @@ const clickBtn = function (btn) {
 
 const clickType = function (type) {
     console.log(store.searchDto.aisleType)
-    if (type === store.searchDto.aisleType) {//selectedType.value
+    if (type === store.searchDto.aisleType) {
         store.searchDto.aisleType=''
     } else {
         store.searchDto.aisleType = type;

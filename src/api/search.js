@@ -20,10 +20,6 @@ function getDongupri(code, success, fail) {
     .catch(fail)
 }
 
-function search(searchDto, success, fail) {
-    return instance.get(``)
-    .then(success)
-    .catch(fail)
-}
 
-export { getSido,getSigungu,getDongupri,search}
+
+export { getSido,getSigungu,getDongupri}

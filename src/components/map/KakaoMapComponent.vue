@@ -1,15 +1,17 @@
 <script setup>
-import { onMounted } from "vue";
+import { onMounted,watch } from "vue";
 // import { ref,computed,inject } from 'vue';
 import { useUserStore } from '@/components/stores/user-store';
 import { useSearchStore } from "@/stores/search"
-import { getMarkers } from "@/api/map";
+import { getMarkers,getMarkersByName } from "@/api/map";
 
 const { VITE_KAKAO_APP_KEY } = import.meta.env;
 const store = useUserStore()
 const searchStore = useSearchStore()
 //const markers = [];//마커들 관리하는 테이블
 const markerMapping=new Map();//마커와 id 매핑하는 테이블
+let map =null
+let clusterer = null
 
 
 const initMap = async() => {
@@ -18,8 +20,8 @@ const initMap = async() => {
     center: new kakao.maps.LatLng(33.450701, 126.570667),
     level: 3,
   }; //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
-  const map = new kakao.maps.Map(container, options);
-  var clusterer = new kakao.maps.MarkerClusterer({
+  map = new kakao.maps.Map(container, options);
+  clusterer = new kakao.maps.MarkerClusterer({
           map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
           averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
           minLevel: 4, // 클러스터 할 최소 지도 레벨 
@@ -27,7 +29,7 @@ const initMap = async() => {
       minClusterSize: 1
           });
   kakao.maps.event.addListener(map, 'tilesloaded', async () => {
-
+    
     //특정 레벨 이상시 마커 작동 x
     if (map.getLevel() >= 6) {
       clusterer.clear();
@@ -37,9 +39,37 @@ const initMap = async() => {
     // 지도 영역정보를 얻어옴
     var bounds = map.getBounds();
     
-    const response = await getMarkers(bounds,searchStore.searchDto);
+    const response = await getMarkers(bounds, searchStore.searchDto);
+    //이동
+    makePins(response);
+  });
+   
     
-    const newMarkerIds = new Set(response.data.map(item => item.aptId));
+
+  
+};
+watch(() => searchStore.clicked, async () => {
+  
+  const response = await getMarkersByName(searchStore.searchNameDto, searchStore.searchDto)
+  makePins(response);
+  searchStore.clicked = false;
+});
+
+onMounted(async () => {
+  if (window.kakao && window.kakao.maps) {
+    initMap();
+  } else {
+    const script = document.createElement("script");
+    /* global kakao */
+    script.onload = () => kakao.maps.load(initMap);
+    script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${VITE_KAKAO_APP_KEY}&libraries=services,clusterer,drawing`;
+    document.head.appendChild(script);
+
+  }
+});
+
+const makePins = function (response) {
+  const newMarkerIds = new Set(response.data.map(item => item.aptId));
     //기존 마커 업데이트
     markerMapping.forEach((marker, id) => {
       if (!newMarkerIds.has(id))//기존의 aptId는 사라지지않게하여 다시 렌더링 방지
@@ -78,29 +108,7 @@ const initMap = async() => {
         clusterer.addMarkers(Array.from(markerMapping.values()));
       }
 
-  });
-   
-    
-
-  
-};
-
-
-
-onMounted(async () => {
-  if (window.kakao && window.kakao.maps) {
-    initMap();
-  } else {
-    const script = document.createElement("script");
-    /* global kakao */
-    script.onload = () => kakao.maps.load(initMap);
-    script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${VITE_KAKAO_APP_KEY}&libraries=services,clusterer,drawing`;
-    document.head.appendChild(script);
-
-  }
-});
-
-
+}
 
 </script>
 
