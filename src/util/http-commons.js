@@ -19,7 +19,30 @@ instance.defaults.headers.post['Content-Type'] = 'application/json'
 instance.defaults.headers.put['Content-Type'] = 'application/json'
 
 // Request, Response 시 설정한 내용을 적용.
-instance.interceptors.request.use((config) => {
+instance.interceptors.request.use(async(config) => {
+    // 현재 accessToken 확인 없을 시 재발급(새로고침시 발동)
+    if (!instance.defaults.headers.common['Authorization']) {
+        
+        // Token 재발급 로직
+        if (!isTokenRefreshing) {
+            isTokenRefreshing = true;
+
+            try {
+                const response = await instance.post('/users/silent-refresh');
+                const newAccessToken = "Bearer "+response.data
+
+                instance.defaults.headers.common['Authorization'] = newAccessToken;
+                token.value = newAccessToken;
+                config.headers.Authorization = newAccessToken;
+            } catch (error) {
+                // 토큰 재발급 실패 처리
+                console.error("Token refresh failed:", error);
+                // 추가적인 처리, 예: 로그인 페이지로 리디렉트 등
+            } finally {
+                isTokenRefreshing = false;
+            }
+        }
+    }
     return config
 }), (error) => {
     return Promise.reject(error)
@@ -35,11 +58,13 @@ instance.interceptors.response.use((response) => {
 }, async (error) => {
 
     const { config, response: { status } } = error
+    console.log("작동확인1")
 
     // 페이지가 새로고침되어 저장된 accessToken이 없어진 경우.
     // 토큰 자체가 만료되어 더 이상 진행할 수 없는 경우.
     if (status == httpStatusCode.UNAUTHORIZED) {
         // 요청 상태 저장
+        console.log("작동확인")
         const originalRequest = config
 
         // Token을 재발급하는 동안 다른 요청이 발생하는 경우 대기.
@@ -49,12 +74,12 @@ instance.interceptors.response.use((response) => {
 
             // 에러가 발생했던 컴포넌트의 axios로 이동하고자하는 경우
             // 반드시 return을 붙여주어야한다.
-            return await instance.post('/slient-refresh')
+            return await instance.post('/users/silent-refresh')
                 .then((response) => {
-                    const newAccessToken = response.data.Authorization
+                    const newAccessToken = "Bearer "+response.data
 
                     instance.defaults.headers.common['Authorization'] = newAccessToken
-                    token.value= new newAccessToken;
+                    token.value= newAccessToken;
                     originalRequest.headers.Authorization = newAccessToken
 
                     isTokenRefreshing = false

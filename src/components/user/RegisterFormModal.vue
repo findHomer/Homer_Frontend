@@ -11,6 +11,7 @@ const registDto = ref({
 })
 const doRegist = function(){
   regist(registDto);
+  dialog.value =true;
 }
 </script>
 <template>
