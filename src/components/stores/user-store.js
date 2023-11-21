@@ -54,9 +54,11 @@ export const useUserStore = defineStore('userStore', () => {
     }
 
     const logout = async () => {
-        await instance.delete('/users/logout')
+        instance.defaults.headers.common['Authorization'] = token.value
+        await instance.post('/users/logout')
         .then( () => {
             instance.defaults.headers.common['Authorization'] = ''
+            token.value=''
             changeMenuState()
         })
     }

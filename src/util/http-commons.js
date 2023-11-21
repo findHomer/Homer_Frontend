@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { httpStatusCode } from './http-status'
-
+import {token} from '@/components/stores/user-store'
 const { VITE_SERVER_URL } = import.meta.env
 
 function localAxios(){
@@ -54,6 +54,7 @@ instance.interceptors.response.use((response) => {
                     const newAccessToken = response.data.Authorization
 
                     instance.defaults.headers.common['Authorization'] = newAccessToken
+                    token.value= new newAccessToken;
                     originalRequest.headers.Authorization = newAccessToken
 
                     isTokenRefreshing = false
