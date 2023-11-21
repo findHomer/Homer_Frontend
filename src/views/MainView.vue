@@ -50,11 +50,13 @@ const cssChatWidth = computed(() => {
 
 <template>
   <v-app id="inspire">
-    <HeadingNavbar />
     
+    <HeadingNavbar />
+  
     <NavigationDrawer />
+  
     <KakaoMapComponent />
-
+  
     <v-navigation-drawer
       v-model="select"
       location="right"

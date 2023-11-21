@@ -15,7 +15,7 @@ const logout = function(){
 </script>
 
 <template>
-  <v-app-bar flat>
+  <v-app-bar >
     <v-container class="mx-auto d-flex align-center justify-center">
       <v-avatar class="me-4" color="grey-darken-1" size="32"></v-avatar>
       <v-text>Homer</v-text>
