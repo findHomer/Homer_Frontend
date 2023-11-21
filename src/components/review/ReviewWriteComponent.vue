@@ -13,7 +13,9 @@ console.log(decoded.sub);
 
 const rating = ref(3);
 const contents = ref("");
-
+const emit = defineEmits([
+  "refresh"
+])
 const reviewPost = () => {
   const params = {
     aptId : props.aptId,
@@ -25,6 +27,9 @@ const reviewPost = () => {
   postReview(params,
   ({data})=>{
     console.log(data);
+    rating.value = 3;
+    contents.value = "";
+    emit("refresh")
   },
   (error) =>
   {
