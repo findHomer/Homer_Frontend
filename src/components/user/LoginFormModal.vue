@@ -1,6 +1,22 @@
 <script setup>
 import { ref } from "vue";
+
+import { useUserStore } from '@/components/stores/user-store'
 const dialog = ref(false);
+const email = ref('');
+const password = ref('');
+const userStore = useUserStore();
+const doLogin = async()=> {
+  const loginDto = {
+    "email": email.value,
+    "password":password.value
+  }
+  await userStore.login(loginDto);
+  //dialog.value = true;
+  //const response = postLogin(email.value, password.value);
+  //console.log(response);
+}
+
 </script>
 <template>
   <v-row justify="center">
@@ -17,10 +33,10 @@ const dialog = ref(false);
           <v-container>
             <v-row>
               <v-col cols="12">
-                <v-text-field label="Email*" required></v-text-field>
+                <v-text-field v-model="email" label="Email*" required></v-text-field>
               </v-col>
               <v-col cols="12">
-                <v-text-field label="Password*" type="password" required></v-text-field>
+                <v-text-field v-model="password" label="Password*" type="password" required></v-text-field>
               </v-col>
             </v-row>
           </v-container>
@@ -29,7 +45,7 @@ const dialog = ref(false);
           <v-container>
             <v-row>
               <v-col class="text-center">
-                <v-btn variant="text" @click="dialog = false"> Login </v-btn>
+                <v-btn variant="text" @click="doLogin"> Login </v-btn>
               </v-col>
             </v-row>
             <v-row>
