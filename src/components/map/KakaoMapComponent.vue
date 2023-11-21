@@ -1,11 +1,13 @@
 <script setup>
 import { onMounted } from "vue";
 // import { ref,computed,inject } from 'vue';
-import {useUserStore} from '@/components/stores/user-store';
+import { useUserStore } from '@/components/stores/user-store';
+import { useSearchStore } from "@/stores/search"
 import { getMarkers } from "@/api/map";
 
 const { VITE_KAKAO_APP_KEY } = import.meta.env;
 const store = useUserStore()
+const searchStore = useSearchStore()
 //const markers = [];//마커들 관리하는 테이블
 const markerMapping=new Map();//마커와 id 매핑하는 테이블
 
@@ -35,7 +37,7 @@ const initMap = async() => {
     // 지도 영역정보를 얻어옴
     var bounds = map.getBounds();
     
-    const response = await getMarkers(bounds);
+    const response = await getMarkers(bounds,searchStore.searchDto);
     
     const newMarkerIds = new Set(response.data.map(item => item.aptId));
     //기존 마커 업데이트
@@ -64,7 +66,7 @@ const initMap = async() => {
       
         kakao.maps.event.addListener(marker, 'click', function () {
           store.aptId = element.aptId; //markerMapping.get(marker)
-          console.log(store.aptId);
+          //console.log(store.aptId);
         })
       
      
@@ -82,7 +84,6 @@ const initMap = async() => {
 
   
 };
-
 
 
 

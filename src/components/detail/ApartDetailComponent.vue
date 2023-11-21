@@ -55,6 +55,7 @@ const chartData = computed(() => {
             }]
         };
     } else {
+      //데이터없을때
         return { labels: [], datasets: [] };
     }
 });
@@ -80,7 +81,7 @@ onMounted(()=>{
   watch(()=>store.aptId, async()=>{
   //console.log(store.aptId)
   const response = await getApart(store.aptId)
-    
+      console.log(response)
       aptName.value = response.data.aptName
       items.value.aisleType = response.data.aisleType
       items.value.maxFloor = response.data.maxFloor ? "최고"+response.data.maxFloor+"층" : "";
