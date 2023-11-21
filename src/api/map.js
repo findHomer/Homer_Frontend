@@ -10,7 +10,7 @@ function getMarkers(bounds, success, fail){
         "startLng" :bounds.ha,
         "endLng" :bounds.oa
     }
-    instance.get(`/apartments/locations/maps`, {params : param})
+    return instance.get(`/apartments/locations/maps`, {params : param})
     .then(success)
     .catch(fail)
 }

@@ -1,39 +1,43 @@
 <script setup>
 import { ref,computed,inject,watch,onMounted } from 'vue'
+import {getSido,getSigungu,getDongupri} from "@/api/search"
 const searchName = ref('')
-const axios = inject('axios')
 const sido = ref([])
 const sigungu= ref([])
+const dongupri=ref([])
+const selectedSido = ref('')
+const selectedSigungu = ref('')
+const selectedDongupri = ref('')
 
-const selectedSido= ref('')
-const getSigungu = async () => {
-    console.log(sido.value);
-    for (let i=0; i<sido.value.length; i++) {
-        if (sido.value.name === selectedSido.value) {
-            const response = await axios.get(`/dongcode/${sido.value.code}/sigungu`)
-            sigungu.value = response.data.map((data) => ({
-                    name: data.name,
-                    code: data.code
-            }));
-            console.log(sigungu)
-            break;
-        }
-    }
+const getSigunguList = async () => {
+    const response = await getSigungu(selectedSido.value);
+    sigungu.value = response.data.map((data) => ({
+                name: data.name,
+                code: data.code
+        }));
+    
     //시군구 동읍 초기화
     
+}
+
+const getDongupriList = async () => {
+    const response = await getDongupri(selectedSido.value+selectedSigungu.value);
+    dongupri.value = response.data.map((data) => ({
+            name: data.name,
+                code: data.code
+        }));
     
+    //시군구 동읍 초기화
     
-    console.log(sido);
 }
 
 
 onMounted(async() => {
-    const response = await axios.get(`/dongcode/sido`)
+    const response = await getSido();
     sido.value = response.data.map((data) => ({
         name: data.name,
         code: data.code
     }));
-    console.log(sido)
 
 });
 </script>
@@ -54,20 +58,26 @@ onMounted(async() => {
                 item-title="name"
                 item-value="code"
                 v-model="selectedSido"
-                @update:modelValue = "getSigungu"
+                @update:modelValue = "getSigunguList"
                 variant="outlined"
             ></v-select>
             </v-col>
             <v-col> <v-select
                 label="시군구"
                 :items="sigungu"
-                @change = "getDongupri"
+                item-title="name"
+                item-value="code"
+                v-model="selectedSigungu"
+                @update:modelValue = "getDongupriList"
                 variant="outlined"
             ></v-select>
             </v-col>
             <v-col> <v-select
                 label="동읍리"
-                :items="['California', 'Colorado', 'Florida', 'Georgia', 'Texas', 'Wyoming']"
+                :items="dongupri"
+                item-title="name"
+                item-value="code"
+                v-model="selectedDongupri"
                 variant="outlined"
             ></v-select>
             </v-col>
