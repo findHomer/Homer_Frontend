@@ -3,12 +3,6 @@ import { ref } from "vue";
 import ApartDetailComponent from "../detail/ApartDetailComponent.vue";
 import SearchBarComponent from "../detail/SearchBarComponent.vue";
 const drawer = ref(null);
-const links = [
-  ["mdi-inbox-arrow-down", "Inbox"],
-  ["mdi-send", "Send"],
-  ["mdi-delete", "Trash"],
-  ["mdi-alert-octagon", "Spam"],
-];
 </script>
 
 <template>
