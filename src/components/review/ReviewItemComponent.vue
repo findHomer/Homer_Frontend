@@ -13,14 +13,13 @@ const createdAt = new Date(props.createdAt);
 </script>
 
 <template>
-  <div>
     <v-container class="pa-5" fluid>
       <v-row>
         <v-col cols="3" class="d-flex justify-center">
           <!-- 사용자 프로필 -->
           <ProfileComponent
             :profile-url="props.profileUrl"
-            :avatar-size="50"
+            :avatar-size="70"
             :user-name="props.nickname"
           />
         </v-col>
@@ -78,7 +77,6 @@ const createdAt = new Date(props.createdAt);
         </v-col>
       </v-row>
     </v-container>
-  </div>
 </template>
 
 <style scoped>
