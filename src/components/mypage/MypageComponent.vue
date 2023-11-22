@@ -41,38 +41,59 @@ const rules = ref([
 
 const saveProfile = () => {
   // console.log(profile.value.profileUrl.value);
-  if (profile.value != null) {
+  if (profile.value != null && profile.value != undefined && profile.value != "") {
     changeProfile(
       profile.value[0],
       ({ data }) => {
         console.log(data);
+        resultFeed.value = "success";
       },
       (error) => {
         console.log(error);
+        resultFeed.value = "error";
+        console.log(resultFeed);
       }
     );
   }
 };
+
+const alertMsg = {
+  success: {
+    color: "success",
+    icon: "$success",
+    title: "업로드 성공",
+    text: "프로필 업로드에 성공하였습니다!",
+  },
+  error: {
+    color: "error",
+    icon: "$error",
+    title: "업로드 실패",
+    text: "프로필 업로드에 실패하였습니다.",
+  },
+};
+
+const resultFeed = ref("");
 </script>
 
 <template>
-  <v-card class="mx-auto" max-width="450" align="center" title="회원 정보">
+  <v-card class="mx-auto" max-width="450">
+    <v-card-title align="center"> 회원 정보 </v-card-title>
     <v-container>
-      <template>
+      <template v-if="resultFeed != null && resultFeed != '' && resultFeed != undefined">
         <v-row>
           <v-col>
             <v-alert
-              color="success"
-              icon="$success"
-              title="Alert title"
-              text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, ratione debitis quis est labore voluptatibus..."
+              :color="alertMsg[resultFeed].color"
+              :icon="alertMsg[resultFeed].icon"
+              :title="alertMsg[resultFeed].title"
+              :text="alertMsg[resultFeed].text"
             ></v-alert>
           </v-col>
         </v-row>
       </template>
 
       <v-row>
-        <v-col>
+        <v-col align="center">
           <v-avatar size="100" color="grey" cover>
             <v-img
               width="100"
