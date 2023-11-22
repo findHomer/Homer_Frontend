@@ -8,7 +8,7 @@ import { ref, watch, computed } from "vue";
 import { useChatRoomStore } from "@/stores/chatroom";
 import { storeToRefs } from "pinia";
 import ChatRoomInsideComponent from "../components/chat/ChatRoomInsideComponent.vue";
-import {useRoute} from "vue-router"
+import { useRoute } from "vue-router";
 const store = useChatRoomStore();
 
 const { isChat } = storeToRefs(store);
@@ -48,21 +48,16 @@ const cssChatWidth = computed(() => {
 });
 
 const route = useRoute();
-
 </script>
 
 <template>
   <v-app id="inspire">
-    <HeadingNavbar/>
-    <v-main>
+    <HeadingNavbar />
+    <v-main class="pe-0">
       <NavigationDrawer />
-
-      <KakaoMapComponent v-if="route.name !== 'mypage'"/>
-   
+      <KakaoMapComponent v-if="route.name !== 'mypage'" />
       <router-view></router-view>
-
     </v-main>
-  
 
     <v-navigation-drawer
       v-model="select"
@@ -98,17 +93,16 @@ const route = useRoute();
       </v-btn>
 
       <v-container class="d-flex align-end h-100">
-          <v-card height="600" class="rounded-xl">
-              <!-- chat id 처리 하기 -->
-              <template v-if="!isChat">
-                <chat-room-list-component />
-              </template>
+        <v-card height="600" class="rounded-xl">
+          <!-- chat id 처리 하기 -->
+          <template v-if="!isChat">
+            <chat-room-list-component />
+          </template>
 
-              <template v-else>
-                <ChatRoomInsideComponent />
-              </template>
-          </v-card>
-       
+          <template v-else>
+            <ChatRoomInsideComponent />
+          </template>
+        </v-card>
       </v-container>
     </v-navigation-drawer>
   </v-app>
