@@ -58,7 +58,15 @@ export const useUserStore = defineStore('userStore', () => {
         await instance.post('/users/logout')
         .then( () => {
             instance.defaults.headers.common['Authorization'] = ''
-            token.value=''
+            token.value = ''
+            var cookies = document.cookie.split(";");
+
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i];
+                var eqPos = cookie.indexOf("=");
+                var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
+            }
             changeMenuState()
         })
     }
@@ -87,6 +95,7 @@ export const useUserStore = defineStore('userStore', () => {
         logout,
         modify,
         withdrawal,
+        changeMenuState,
         menuList,
         aptId,
         searchDto

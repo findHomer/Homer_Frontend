@@ -38,4 +38,13 @@ function getMarkersByName(searchNameDto, searchDto, success, fail) {
     .catch(fail)
 }
 
-export { getMarkers ,getMarkersByName}
+function getLocation(dongCode, success, fail) {
+    
+    instance.defaults.headers.common['Authorization'] =token.value
+    
+    return instance.get(`/apartments/locations/dong?dongCode=${dongCode}`)
+    .then(success)
+    .catch(fail)
+}
+
+export { getMarkers ,getMarkersByName,getLocation}

@@ -15,7 +15,6 @@ import {
 } from 'chart.js'
 import { Line } from 'vue-chartjs'
 import { onMounted } from 'vue';
-
 const store = useUserStore();
 
 
@@ -76,8 +75,7 @@ const items = ref({
 const aptName=ref('');
 
 onMounted(()=>{
-    //details()
-
+    
   watch(()=>store.aptId, async()=>{
   //console.log(store.aptId)
   const response = await getApart(store.aptId)
@@ -88,9 +86,22 @@ onMounted(()=>{
       items.value.householdCount = response.data.householdCount ? response.data.householdCount + "세대" : "";
       items.value.dongCount = response.data.dongCount ? response.data.dongCount+"동" : "";
       items.value.parkPerHouse= response.data.parkPerHouse ?"세대당"+response.data.parkPerHouse+"대" : "";
-
+      
       dealInfos.value=response.data.dealInfos
       tab.value=0
+
+      var roadviewContainer = document.getElementById('roadview'); //로드뷰를 표시할 div
+      var roadview = new kakao.maps.Roadview(roadviewContainer); //로드뷰 객체
+      var roadviewClient = new kakao.maps.RoadviewClient(); //좌표로부터 로드뷰 파노ID를 가져올 로드뷰 helper객체
+      console.log(response.data.lng)
+      var position = new kakao.maps.LatLng(response.data.lat, response.data.lng);
+
+      // 특정 위치의 좌표와 가까운 로드뷰의 panoId를 추출하여 로드뷰를 띄운다.
+      roadviewClient.getNearestPanoId(position, 50, function(panoId) {
+          roadview.setPanoId(panoId, position); //panoId와 중심좌표를 통해 로드뷰 실행
+      });
+      
+      
       //console.log(dealInfos);
    
 })
@@ -107,6 +118,9 @@ const filteredItems = computed(() => {
                      return acc;
                  }, []);
 });
+
+
+
 </script>
 
 <template>
@@ -162,7 +176,7 @@ const filteredItems = computed(() => {
 
 
 
-    <v-row><div></div></v-row>
+    <v-row><div id="roadview" style="width:100%;height:300px;"></div></v-row>
     <v-row>
      
     </v-row>
