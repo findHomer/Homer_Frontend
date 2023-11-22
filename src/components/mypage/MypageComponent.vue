@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import { getMyInfo } from "@/api/mypage";
+import { getMyInfo, changeProfile } from "@/api/mypage";
 const name = ref(null);
 const birth = ref(null);
 const nickname = ref(null);
@@ -39,14 +39,38 @@ const rules = ref([
   },
 ]);
 
-const changeProfile = () => {
-
-}
+const saveProfile = () => {
+  // console.log(profile.value.profileUrl.value);
+  if (profile.value != null) {
+    changeProfile(
+      profile.value[0],
+      ({ data }) => {
+        console.log(data);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+};
 </script>
 
 <template>
   <v-card class="mx-auto" max-width="450" align="center" title="회원 정보">
     <v-container>
+      <template>
+        <v-row>
+          <v-col>
+            <v-alert
+              color="success"
+              icon="$success"
+              title="Alert title"
+              text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, ratione debitis quis est labore voluptatibus..."
+            ></v-alert>
+          </v-col>
+        </v-row>
+      </template>
+
       <v-row>
         <v-col>
           <v-avatar size="100" color="grey" cover>
@@ -106,7 +130,7 @@ const changeProfile = () => {
 
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn color="success" @click="">
+      <v-btn color="success" @click="saveProfile">
         저장
         <v-icon icon="mdi-chevron-right" end></v-icon>
       </v-btn>
