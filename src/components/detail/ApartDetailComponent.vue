@@ -1,7 +1,9 @@
 <script setup>
 import { ref, computed, watch } from "vue";
-import { useUserStore } from "../stores/user-store";
 import { getApart } from "@/api/apart";
+import { useUserStore,token } from '../stores/user-store';
+import {getApart} from "@/api/apart"
+import { jwtDecode } from "jwt-decode";
 
 import {
   Chart as ChartJS,
@@ -17,6 +19,8 @@ import { Line } from "vue-chartjs";
 import { onMounted } from "vue";
 import { storeToRefs } from "pinia";
 const store = useUserStore();
+const userEmail = jwtDecode(token.value)
+const zzim = ref(false)
 
 ChartJS.register(
   CategoryScale,
@@ -78,6 +82,7 @@ const { aptId } = storeToRefs(store);
 
 watch(aptId, async () => {
   //console.log(store.aptId)
+
   const response = await getApart(aptId.value);
   console.log(response);
   aptName.value = response.data.aptName;
@@ -92,6 +97,14 @@ watch(aptId, async () => {
   items.value.parkPerHouse = response.data.parkPerHouse
     ? "세대당" + response.data.parkPerHouse + "대"
     : "";
+
+
+  response.data.emails.forEach((element) =>{
+
+    if(elment===userEmail){
+      zzim.value=true;
+    }
+  })   
 
   dealInfos.value = response.data.dealInfos;
   tab.value = 0;
@@ -109,13 +122,13 @@ watch(aptId, async () => {
 });
 // 비어있지 않은 항목을 필터링하고 두 개씩 그룹화합니다.
 const filteredItems = computed(() => {
-  return Object.entries(items.value)
-    .filter(([key, value]) => value && value.trim() !== "")
-    .reduce((acc, curr, index) => {
-      if (index % 2 === 0) acc.push([]);
-      acc[acc.length - 1].push(curr);
-      return acc;
-    }, []);
+    return Object.entries(items.value)
+                 .filter(([key, value]) => value && value.trim() !== "")
+                 .reduce((acc, curr, index) => {
+                     if (index % 2 === 0) acc.push([]);
+                     acc[acc.length - 1].push(curr);
+                     return acc;
+                 }, []);
 });
 </script>
 
