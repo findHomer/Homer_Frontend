@@ -11,7 +11,7 @@ const router = createRouter({
       
       children :[
         {
-          path:'myPage',
+          path:'mypage',
           name:'myPage',
           component: () => import("@/views/MyPageView.vue")
         }

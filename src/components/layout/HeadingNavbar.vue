@@ -5,12 +5,9 @@ import RegisterFormModal from "../user/RegisterFormModal.vue";
 import { useUserStore } from '@/components/stores/user-store'
 const userStore = useUserStore()
 
-const goMypage = function(){
-  router.push(userStore.menuList[2].routerName);
-}
-
 const logout = function(){
   userStore.logout();
+  router.push("/")
 }
 </script>
 
@@ -32,11 +29,11 @@ const logout = function(){
         <RegisterFormModal />
       </v-col>
       <v-col v-if="userStore.menuList[2].show">
-      <RouterLink to="myPage">
+      <RouterLink :to="userStore.menuList[2].routeName">
         {{ userStore.menuList[2].name }}
       </RouterLink>
       </v-col>
-      <v-col @click="logout" v-if="userStore.menuList[3].show">
+      <v-col @click=" logout" v-if="userStore.menuList[3].show">
         {{ userStore.menuList[3].name }}
       </v-col>
 
