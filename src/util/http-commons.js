@@ -29,10 +29,11 @@ instance.interceptors.request.use(async(config) => {
             isTokenRefreshing = true;
             const userStore = useUserStore();
             try {
+                token.value=''
                 const response = await instance.post('/users/silent-refresh');
                 const newAccessToken = "Bearer "+response.data
 
-                instance.defaults.headers.common['Authorization'] = newAccessToken;
+                //instance.defaults.headers.common['Authorization'] = newAccessToken;
                 token.value = newAccessToken;
                 config.headers.Authorization = newAccessToken;
                 
@@ -83,11 +84,12 @@ instance.interceptors.response.use((response) => {
             const userStore = useUserStore();
             // 에러가 발생했던 컴포넌트의 axios로 이동하고자하는 경우
             // 반드시 return을 붙여주어야한다.
+            token.value=''
             return await instance.post('/users/silent-refresh')
                 .then((response) => {
                     const newAccessToken = "Bearer "+response.data
 
-                    instance.defaults.headers.common['Authorization'] = newAccessToken
+                    //instance.defaults.headers.common['Authorization'] = newAccessToken
                     token.value= newAccessToken;
                     originalRequest.headers.Authorization = newAccessToken
 
