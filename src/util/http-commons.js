@@ -21,38 +21,38 @@ instance.defaults.headers.put['Content-Type'] = 'application/json'
 
 // Request, Response 시 설정한 내용을 적용.
 instance.interceptors.request.use(async(config) => {
-    // 현재 accessToken 확인 없을 시 재발급(새로고침시 발동)
-    if (!instance.defaults.headers.common['Authorization']) {
+    // // 현재 accessToken 확인 없을 시 재발급(새로고침시 발동)
+    // if (!instance.defaults.headers.common['Authorization']) {
         
-        // Token 재발급 로직
-        if (!isTokenRefreshing) {
-            isTokenRefreshing = true;
-            const userStore = useUserStore();
-            try {
-                token.value=''
-                const response = await instance.post('/users/silent-refresh');
-                const newAccessToken = "Bearer "+response.data
+    //     // Token 재발급 로직
+    //     if (!isTokenRefreshing) {
+    //         isTokenRefreshing = true;
+    //         const userStore = useUserStore();
+    //         try {
+    //             token.value=''
+    //             const response = await instance.post('/users/silent-refresh');
+    //             const newAccessToken = "Bearer "+response.data
 
-                //instance.defaults.headers.common['Authorization'] = newAccessToken;
-                token.value = newAccessToken;
-                config.headers.Authorization = newAccessToken;
+    //             //instance.defaults.headers.common['Authorization'] = newAccessToken;
+    //             token.value = newAccessToken;
+    //             config.headers.Authorization = newAccessToken;
                 
-                if (userStore.menuList[0].show) {
-                    userStore.changeMenuState()
-                }
-            } catch (error) {
+    //             if (userStore.menuList[0].show) {
+    //                 userStore.changeMenuState()
+    //             }
+    //         } catch (error) {
                
-                if (!userStore.menuList[0].show) {
-                    userStore.changeMenuState()
-                }
-                // 토큰 재발급 실패 처리
-                //console.error("Token refresh failed:", error);
-                // 추가적인 처리, 예: 로그인 페이지로 리디렉트 등
-            } finally {
-                isTokenRefreshing = false;
-            }
-        }
-    }
+    //             if (!userStore.menuList[0].show) {
+    //                 userStore.changeMenuState()
+    //             }
+    //             // 토큰 재발급 실패 처리
+    //             //console.error("Token refresh failed:", error);
+    //             // 추가적인 처리, 예: 로그인 페이지로 리디렉트 등
+    //         } finally {
+    //             isTokenRefreshing = false;
+    //         }
+    //     }
+    // }
     return config
 }), (error) => {
     return Promise.reject(error)
