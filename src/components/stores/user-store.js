@@ -13,7 +13,7 @@ export const useUserStore = defineStore('userStore', () => {
     const menuList = ref([
         { name: '로그인', show: true },
         { name: '회원가입', show: true },
-        { name: '마이페이지', show: false, routeName: 'myPage' },
+        { name: '마이페이지', show: false, routeName: 'mypage' },
         { name: '로그아웃', show: false, routeName: 'logout' }
     ])
     const searchDto = ref({
@@ -22,7 +22,7 @@ export const useUserStore = defineStore('userStore', () => {
         "householdCount": '',
         "parkPerHouse": '',
     })
-    const aptId= ref('1');
+    const aptId= ref('A10022970');
 
     const changeMenuState = () => {
         menuList.value.forEach(menu => {

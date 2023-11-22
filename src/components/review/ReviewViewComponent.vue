@@ -2,20 +2,15 @@
 import ReviewItemComponent from "@/components/review/ReviewItemComponent.vue";
 import ReviewWriteComponent from "./ReviewWriteComponent.vue";
 // import ReviewCardComponent from "../components/review/ReviewCardComponent.vue";
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { getReviews, deleteReview } from "../../api/review";
-import { localAxios } from "../../util/http-commons";
+import { storeToRefs } from "pinia";
+
 import { jwtDecode } from "jwt-decode";
+import { token , useUserStore } from "@/components/stores/user-store"
 
-const local = localAxios();
-const token = local.defaults.headers.common['Authorization']
-// const token = "eyJraWQiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoZ2QxMjNAbmF2ZXIuY29tIiwicm9sZXMiOiJST0xFX1VTRVIiLCJpYXQiOjE3MDA1NDY5MDMsImV4cCI6MTcwMDU1MDUwM30.TATq-OYeN-YlRIzkUVWjdW8BTpP0wQlP4Iw_mS9tHI8"
-const userEmail = token ? jwtDecode(token).sub : null;
-
-const props = defineProps({
-  aptId: String,
-});
-
+const userEmail = token.value ? jwtDecode(token.value).sub : null;
+const store = useUserStore();
 const reviews = ref([]);
 
 const reviewsByCreatedAt = computed(() => {
@@ -32,12 +27,16 @@ const reviewsByCreatedAt = computed(() => {
 });
 
 // const aptId = "A10022970";
-const aptId = props.aptId;
+// const aptId = props.aptId;
+const {aptId} = storeToRefs(store)
 
 onMounted(() => {
-  // getReviewList(props.aptId);
-  getReviewList(aptId)
+  getReviewList(aptId.value)
 });
+
+watch(aptId, () => {
+  getReviewList(aptId.value)
+})
 
 const getReviewList = (aptId) => {
   getReviews(
@@ -56,7 +55,7 @@ const deleteMyReview = (reviewId) => {
     reviewId,
     ({data}) =>{
       console.log(data);
-      getReviewList(aptId);
+      getReviewList(aptId.value);
     },
     (error) =>{
       console.log(error);

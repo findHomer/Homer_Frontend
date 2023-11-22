@@ -10,4 +10,14 @@ const getMyInfo = (success, fail)=>{
     .catch(fail)
 }
 
-export { getMyInfo }
+const changeProfile = (profile, success, fail) => {
+    instance.defaults.headers.common['Authorization'] = token.value
+    
+    const form = new FormData();
+    form.append('image', profile);
+
+    instance.patch(`/users/profiles`, form)
+    .then(success)
+    .catch(fail)
+}
+export { getMyInfo, changeProfile}
