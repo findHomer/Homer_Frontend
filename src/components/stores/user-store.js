@@ -22,7 +22,7 @@ export const useUserStore = defineStore('userStore', () => {
         "householdCount": '',
         "parkPerHouse": '',
     })
-    const aptId= ref('1');
+    const aptId= ref('A10022970');
 
     const changeMenuState = () => {
         menuList.value.forEach(menu => {
