@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import ApartDetailComponent from "../detail/ApartDetailComponent.vue";
 import SearchBarComponent from "../detail/SearchBarComponent.vue";
+import ReviewViewComponent from "@/components/review/ReviewViewComponent.vue";
 const drawer = ref(null);
 </script>
 
@@ -13,7 +14,28 @@ const drawer = ref(null);
     </v-sheet>
 
     <v-divider></v-divider>
-    <ApartDetailComponent/>
+    <v-tabs
+      v-model="tab"
+      color="deep-purple-accent-4"
+      align-tabs="center"
+    >
+    <v-tab :value="1">아파트 정보</v-tab>
+    <v-tab :value="2">리뷰</v-tab>
+  </v-tabs>
+    <v-window v-model="tab">
+    <v-window-item :key="1" :value="1">
+    
+      <ApartDetailComponent/>
+    
+    </v-window-item>
+
+    <v-window-item :key="2" :value="2">
+    
+      <ReviewViewComponent/>
+   
+    </v-window-item>
+  </v-window>
+    
   </v-navigation-drawer>
 
   

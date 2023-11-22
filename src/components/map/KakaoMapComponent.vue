@@ -4,7 +4,6 @@ import { onMounted,watch } from "vue";
 import { useUserStore } from '@/components/stores/user-store';
 import { useSearchStore } from "@/stores/search"
 import { getMarkers,getMarkersByName,getLocation } from "@/api/map";
-
 const { VITE_KAKAO_APP_KEY } = import.meta.env;
 const store = useUserStore()
 const searchStore = useSearchStore()
@@ -13,7 +12,7 @@ const markerMapping=new Map();//마커와 id 매핑하는 테이블
 let map =null
 let clusterer = null
 let clickedInfo = null;
-
+let selectedMarker=null
 
 
 //*******************************카테고리별 검색기능**************************************************
@@ -247,7 +246,7 @@ addCategoryClickEvent();
   
 };
 watch(() => searchStore.clicked, async () => {
-    console.log("호출1")
+   
     
     const response = await getMarkersByName(searchStore.searchNameDto, searchStore.searchDto)
 
@@ -257,7 +256,7 @@ watch(() => searchStore.clicked, async () => {
 
 
 watch(() => searchStore.findDong, async () => {
-    console.log("호출2")
+    
     try {
         const response = await getLocation(searchStore.dongCode)
         setCenter(response.data.lat, response.data.lng);
@@ -323,7 +322,8 @@ const makePins = function async(response) {
       var marker = new kakao.maps.Marker({
         position: new kakao.maps.LatLng(element.lat, element.lng),
           title: element.aptName,
-          image: apartImage
+          image: apartImage,
+          
       });
         marker.setMap(map);
 
@@ -334,7 +334,15 @@ const makePins = function async(response) {
      // markerMapping.set(marker, element.aptId)
       
         kakao.maps.event.addListener(marker, 'click', function () {
-            store.aptId = element.aptId; //markerMapping.get(marker)
+            store.aptId = element.aptId;
+
+            //선택 마커 변경시 기존선택마커 복구 및 선택마커 변경
+            // if (selectedMarker != null) {
+            //     selectedMarker.setOpacity(0.7)
+            // }
+            // marker.setOpacity(1)
+            // selectedMarker = marker
+           
             
             //기존인포윈도우,이미지 삭제
             if (clickedInfo!=null) {
@@ -373,6 +381,8 @@ const makePins = function async(response) {
       }
 
 }
+
+
 
 
 
