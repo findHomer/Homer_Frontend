@@ -19,9 +19,9 @@ const logout = function(){
     <v-container class="d-flex align-center">
       <!-- <v-avatar class="me-4" color="grey-darken-1" size="32"></v-avatar> -->
 
-      <v-img style="width:auto; height:200px" src="/src/assets/chatgipt_logo_bg.png"></v-img>
-
-      <v-text>Homer</v-text>
+      <router-link to="/">
+        <v-img style="width:200px" src="/src/assets/chatgipt_logo_bg.png"></v-img>
+      </router-link>
       <!-- <v-btn v-for="link in links" :key="link" :text="link" variant="text"></v-btn> -->
 
       <v-spacer></v-spacer>
@@ -31,10 +31,11 @@ const logout = function(){
       <v-col v-if="userStore.menuList[1].show" max-width="80">
         <RegisterFormModal />
       </v-col>
-      <v-col @click="goMypage" v-if="userStore.menuList[2].show">
+      <v-col v-if="userStore.menuList[2].show">
+      <RouterLink to="myPage">
         {{ userStore.menuList[2].name }}
+      </RouterLink>
       </v-col>
-
       <v-col @click="logout" v-if="userStore.menuList[3].show">
         {{ userStore.menuList[3].name }}
       </v-col>
