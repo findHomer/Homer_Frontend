@@ -15,14 +15,17 @@ const logout = function(){
 </script>
 
 <template>
-  <v-app-bar flat>
-    <v-container class="mx-auto d-flex align-center justify-center">
-      <v-avatar class="me-4" color="grey-darken-1" size="32"></v-avatar>
+  <v-app-bar >
+    <v-container class="d-flex align-center">
+      <!-- <v-avatar class="me-4" color="grey-darken-1" size="32"></v-avatar> -->
+
+      <v-img style="width:auto; height:200px" src="/src/assets/chatgipt_logo_bg.png"></v-img>
+
       <v-text>Homer</v-text>
       <!-- <v-btn v-for="link in links" :key="link" :text="link" variant="text"></v-btn> -->
 
       <v-spacer></v-spacer>
-      <v-col v-if="userStore.menuList[0].show" max-width="80">
+      <v-col v-if="userStore.menuList[0].show">
         <LoginFormModal />
       </v-col>
       <v-col v-if="userStore.menuList[1].show" max-width="80">
