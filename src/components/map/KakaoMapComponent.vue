@@ -3,7 +3,7 @@ import { onMounted,watch } from "vue";
 // import { ref,computed,inject } from 'vue';
 import { useUserStore } from '@/components/stores/user-store';
 import { useSearchStore } from "@/stores/search"
-import { getMarkers,getMarkersByName } from "@/api/map";
+import { getMarkers,getMarkersByName,getLocation } from "@/api/map";
 
 const { VITE_KAKAO_APP_KEY } = import.meta.env;
 const store = useUserStore()
@@ -12,6 +12,7 @@ const searchStore = useSearchStore()
 const markerMapping=new Map();//마커와 id 매핑하는 테이블
 let map =null
 let clusterer = null
+let clickedInfo = null;
 
 
 
@@ -193,6 +194,8 @@ const initMap = async() => {
   // 장소 검색 객체를 생성합니다
   ps = new kakao.maps.services.Places(map); 
 
+ 
+    
 // 지도에 idle 이벤트를 등록합니다
 kakao.maps.event.addListener(map, 'idle', searchPlaces);
 
@@ -212,7 +215,7 @@ addCategoryClickEvent();
   clusterer = new kakao.maps.MarkerClusterer({
           map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체 
           averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정 
-          minLevel: 4, // 클러스터 할 최소 지도 레벨 
+          minLevel: 5, // 클러스터 할 최소 지도 레벨 
       gridSize: 120, //클러스터에 포함될 격자크기    
       minClusterSize: 1
           });
@@ -220,7 +223,14 @@ addCategoryClickEvent();
     
     //특정 레벨 이상시 마커 작동 x
     if (map.getLevel() >= 6) {
-      clusterer.clear();
+        clusterer.clear();
+        if (clickedInfo!=null) {
+            clickedInfo.close();
+            clickedInfo = null;
+            }
+        markerMapping.forEach((marker) => {
+        marker.setMap(null);
+         })
       return;
     }
 
@@ -239,9 +249,36 @@ addCategoryClickEvent();
 watch(() => searchStore.clicked, async () => {
   
   const response = await getMarkersByName(searchStore.searchNameDto, searchStore.searchDto)
-  makePins(response);
+    console.log(response);
+    makePins(response);
+   
   searchStore.clicked = false;
 });
+
+
+watch(() => searchStore.findDong, async () => {
+    try {
+        const response = await getLocation(searchStore.dongCode)
+        setCenter(response.data.lat, response.data.lng);
+        console.log(response);
+    }
+    catch {
+        console.log(searchStore.dongCode)
+        console.log("해당지역 아파트정보가없습니다.")
+    } finally {
+        searchStore.findDong = false;
+    }
+    
+  
+});
+
+function setCenter(lat,lng) {            
+    // 이동할 위도 경도 위치를 생성합니다 
+    var moveLatLon = new kakao.maps.LatLng(lat, lng);
+    map.setLevel(4)
+    // 지도 중심을 이동 시킵니다
+    map.panTo(moveLatLon);
+}
 
 onMounted(async () => {
   if (window.kakao && window.kakao.maps) {
@@ -256,10 +293,10 @@ onMounted(async () => {
   }
 });
 
-const makePins = function (response) {
+const makePins = function async(response) {
   const newMarkerIds = new Set(response.data.map(item => item.aptId));
     //기존 마커 업데이트
-    markerMapping.forEach((marker, id) => {
+     markerMapping.forEach((marker, id) => {
       if (!newMarkerIds.has(id))//기존의 aptId는 사라지지않게하여 다시 렌더링 방지
       {
         marker.setMap(null);
@@ -269,22 +306,58 @@ const makePins = function (response) {
        
       
     });
+    var imageSrc = 'src/assets/chatgipt.png', // 마커이미지의 주소입니다    
+    imageSize = new kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
+    imageOption = {offset: new kakao.maps.Point(32, 69)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+      
+// 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다(아파트용)
+    var apartImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
+
+
     
+  
+// 마커 위에 인포윈도우를 표시합니다. 두번째 파라미터인 marker를 넣어주지 않으면 지도 위에 표시됩니다
 
     //apt 각각 Marker에 매핑시켜주기
     response.data.forEach(element => {
       if (markerMapping.has(element.aptId)) return;
       var marker = new kakao.maps.Marker({
         position: new kakao.maps.LatLng(element.lat, element.lng),
-        title: element.aptName
+          title: element.aptName,
+          image: apartImage
       });
-      marker.setMap(map);
+        marker.setMap(map);
+
+       
+
+       
       markerMapping.set(element.aptId, marker);
      // markerMapping.set(marker, element.aptId)
       
         kakao.maps.event.addListener(marker, 'click', function () {
-          store.aptId = element.aptId; //markerMapping.get(marker)
-          //console.log(store.aptId);
+            store.aptId = element.aptId; //markerMapping.get(marker)
+            
+            //기존인포윈도우,이미지 삭제
+            if (clickedInfo!=null) {
+                clickedInfo.close();
+            }
+
+            var iwContent = `<div style="padding:5px;">${element.aptName}</div>`, // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+            iwPosition = new kakao.maps.LatLng(element.lat, element.lng); //인포윈도우 표시 위치입니다
+
+         // 인포윈도우를 생성합니다
+            var infowindow = new kakao.maps.InfoWindow({
+                position : iwPosition, 
+                content : iwContent 
+            });
+            
+            clickedInfo = infowindow
+            //인포윈도우,이미지 변경 생성
+            infowindow.open(map, marker); 
+            console.log(iwContent);
+
+            setCenter(element.lat, element.lng)
+          
         })
       
      
@@ -292,11 +365,17 @@ const makePins = function (response) {
 
     });
 
-    if (map.getLevel() >= 4) {
+    if (map.getLevel() >= 5) {//레벨 5이상시 클러스터로 변경
         clusterer.addMarkers(Array.from(markerMapping.values()));
+        if (clickedInfo!=null) {
+            clickedInfo.close();
+            clickedInfo = null;
+            }
       }
 
 }
+
+
 
 </script>
 

@@ -15,7 +15,6 @@ import {
 } from 'chart.js'
 import { Line } from 'vue-chartjs'
 import { onMounted } from 'vue';
-const { VITE_KAKAO_APP_KEY } = import.meta.env;
 const store = useUserStore();
 
 

@@ -9,11 +9,12 @@ export const useSearchStore = defineStore('searchStore', () => {
   })
     
     const clicked = ref(false);
-
+    const findDong = ref(false);
+  const dongCode = ref('');
     const searchNameDto = ref({
         "aptName": '',
         "dongCode":''
     })
   
-  return { searchDto,clicked ,searchNameDto}
+  return { searchDto,clicked ,searchNameDto,findDong,dongCode }
 })
