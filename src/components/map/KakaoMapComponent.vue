@@ -5,9 +5,12 @@ import { useUserStore } from '@/components/stores/user-store';
 import { useSearchStore } from "@/stores/search"
 import { getMarkers,getMarkersByName,getLocation } from "@/api/map";
 import { storeToRefs } from "pinia";
+
+//import {refresh} from "@/api/user"
 const { VITE_KAKAO_APP_KEY } = import.meta.env;
 const store = useUserStore()
 const searchStore = useSearchStore()
+
 
 const markerMapping=new Map();//마커와 id 매핑하는 테이블
 let map =null
@@ -280,6 +283,7 @@ function setCenter(lat,lng) {
 }
 
 onMounted(async () => {
+    
   if (window.kakao && window.kakao.maps) {
     initMap();
   } else {
@@ -290,6 +294,8 @@ onMounted(async () => {
     document.head.appendChild(script);
 
   }
+
+  //refresh();
 });
 
 const makePins = function async(response) {

@@ -1,8 +1,7 @@
 <script setup>
 import { ref, computed, watch } from "vue";
-import { getApart } from "@/api/apart";
+import { getApart,postBookmark,delBookmark } from "@/api/apart";
 import { useUserStore,token } from '../stores/user-store';
-import {getApart} from "@/api/apart"
 import { jwtDecode } from "jwt-decode";
 
 import {
@@ -19,8 +18,8 @@ import { Line } from "vue-chartjs";
 import { onMounted } from "vue";
 import { storeToRefs } from "pinia";
 const store = useUserStore();
-const userEmail = jwtDecode(token.value)
-const zzim = ref(false)
+
+const bookmark = ref(false)
 
 ChartJS.register(
   CategoryScale,
@@ -32,7 +31,7 @@ ChartJS.register(
   Legend
 );
 //const axios = inject('axios')
-const tab = ref(null);
+const tab = ref('');
 const dealInfos = ref([]);
 
 const chartData = computed(() => {
@@ -97,14 +96,16 @@ watch(aptId, async () => {
   items.value.parkPerHouse = response.data.parkPerHouse
     ? "세대당" + response.data.parkPerHouse + "대"
     : "";
-
-
+  const userEmail = token.value ? jwtDecode(token.value).sub : null;
+  bookmark.value = false;
+  console.log(userEmail)
   response.data.emails.forEach((element) =>{
-
-    if(elment===userEmail){
-      zzim.value=true;
+    console.log(element);
+    if(element===userEmail){
+      bookmark.value=true;
     }
   })   
+  console.log(bookmark.value)
 
   dealInfos.value = response.data.dealInfos;
   tab.value = 0;
@@ -130,11 +131,28 @@ const filteredItems = computed(() => {
                      return acc;
                  }, []);
 });
+
+
+const addBookmark = function(){
+  bookmark.value=!bookmark.value
+  const answer = postBookmark(aptId.value)
+}
+
+const removeBookmark = function(){
+  bookmark.value=!bookmark.value
+  const answer = delBookmark(aptId.value)
+}
 </script>
 
 <template>
   <v-container>
-    <v-row>{{ aptName }}</v-row>
+    <v-row>
+      <v-col>{{ aptName }}</v-col>
+      <v-col>
+        <v-img v-if="bookmark" src="/src/assets/bookmark_picked.png" @click="removeBookmark"></v-img>
+        <v-img v-if="!bookmark" src="/src/assets/bookmark.png" @click="addBookmark"></v-img>
+    </v-col>
+    </v-row>
 
     <v-row v-for="(group, index) in filteredItems" :key="index">
       <v-col v-for="item in group" :key="item[0]">
