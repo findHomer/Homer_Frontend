@@ -55,7 +55,7 @@ const route = useRoute();
     <HeadingNavbar />
     <v-main class="pe-0">
       <NavigationDrawer />
-      <KakaoMapComponent v-if="route.name !== 'mypage'" />
+      <KakaoMapComponent v-if="route.name !== 'myPage'" />
       <router-view></router-view>
     </v-main>
 
