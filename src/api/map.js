@@ -7,7 +7,7 @@ const instance = localAxios()
 
 function getMarkers(bounds, searchDto, success, fail) {
     
-    instance.defaults.headers.common['Authorization'] =token.value
+   // instance.defaults.headers.common['Authorization'] =token.value
     const param = {
         "startLat": bounds.qa,
         "endLat": bounds.pa,
@@ -39,8 +39,8 @@ function getMarkersByName(searchNameDto, searchDto, success, fail) {
 }
 
 function getLocation(dongCode, success, fail) {
-    
-    instance.defaults.headers.common['Authorization'] =token.value
+    console.log(token.value);
+    //instance.defaults.headers.common['Authorization'] =token.value
     
     return instance.get(`/apartments/locations/dong?dongCode=${dongCode}`)
     .then(success)

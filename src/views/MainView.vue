@@ -4,15 +4,22 @@ import KakaoMapComponent from "@/components/map/KakaoMapComponent.vue";
 import NavigationDrawer from "../components/layout/NavigationDrawer.vue";
 //import ChatView from "@/views/ChatView.vue";
 import ChatRoomListComponent from "../components/chat/ChatRoomListComponent.vue";
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed,onMounted } from "vue";
 import { useChatRoomStore } from "@/stores/chatroom";
 import { storeToRefs } from "pinia";
 import ChatRoomInsideComponent from "../components/chat/ChatRoomInsideComponent.vue";
 import { useRoute } from "vue-router";
+import {refresh} from "@/api/user";
 const store = useChatRoomStore();
 
 const { isChat } = storeToRefs(store);
 const select = ref(false);
+
+onMounted(()=>{
+  refresh();
+})
+
+
 
 const chatFab = ref({
   icon: "mdi-chat",
