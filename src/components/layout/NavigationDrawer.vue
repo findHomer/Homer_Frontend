@@ -4,6 +4,8 @@ import ApartDetailComponent from "../detail/ApartDetailComponent.vue";
 import SearchBarComponent from "../detail/SearchBarComponent.vue";
 import ReviewViewComponent from "@/components/review/ReviewViewComponent.vue";
 const drawer = ref(null);
+
+const tab= ref(null);
 </script>
 
 <template>
