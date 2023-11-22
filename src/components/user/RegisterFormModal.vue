@@ -1,6 +1,18 @@
 <script setup>
 import { ref } from "vue";
+import {regist} from '@/api/user'
 const dialog = ref(false);
+const registDto = ref({
+  "email" :'',
+  "password":'',
+  'name':'',
+  'nickname':'',
+  'birth' :''
+})
+const doRegist = function(){
+  regist(registDto);
+  dialog.value =true;
+}
 </script>
 <template>
   <v-row justify="center">
@@ -17,10 +29,11 @@ const dialog = ref(false);
           <v-container>
             <v-row>
               <v-col cols="12">
-                <v-text-field label="Email*" required></v-text-field>
+                <v-text-field v-model = "registDto.email" label="Email*" required></v-text-field>
               </v-col>
               <v-col cols="12">
                 <v-text-field
+                v-model = "registDto.password" 
                   label="Password*"
                   hint="소문자,대문자,특수문자 각 1개 이상 포함 8~15자리"
                   type="password"
@@ -29,13 +42,13 @@ const dialog = ref(false);
                 ></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
-                <v-text-field label="name*" required></v-text-field>
+                <v-text-field v-model = "registDto.name" label="name*" required></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
-                <v-text-field label="nickname*" required></v-text-field>
+                <v-text-field v-model = "registDto.nickname" label="nickname*" required></v-text-field>
               </v-col>
               <v-col cols="12" sm="6">
-                <v-text-field label="birth date*" required></v-text-field>
+                <v-text-field v-model = "registDto.birth" label="birth date*" required></v-text-field>
               </v-col>
               <v-col>
                 <template>
@@ -48,11 +61,10 @@ const dialog = ref(false);
               </v-col>
             </v-row>
           </v-container>
-          <small>*indicates required field</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="blue-darken-1" variant="text" @click="dialog = false"> Save </v-btn>
+          <v-btn color="blue-darken-1" variant="text" @click="doRegist"> 회원가입 </v-btn>
           <v-btn color="red" variant="text" @click="dialog = false"> Close </v-btn>
         </v-card-actions>
       </v-card>
