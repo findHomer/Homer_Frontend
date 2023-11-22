@@ -1,41 +1,45 @@
 <script setup>
 import { ref } from "vue";
 import { postReview } from "../../api/review";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 const props = defineProps({
-  token : String,
-  aptId : String,
-})
+  token: String,
+  aptId: String,
+});
 
 const decoded = jwtDecode(props.token);
-console.log(decoded.sub);
 
 const rating = ref(3);
 const contents = ref("");
-const emit = defineEmits([
-  "refresh"
-])
+const image = ref(null);
+const imageUrl = ref(null);
+
+const previewImage = () => {
+  imageUrl.value = URL.createObjectURL(image.value[0]);
+};
+const emit = defineEmits(["refresh"]);
 const reviewPost = () => {
   const params = {
-    aptId : props.aptId,
-    email: decoded.sub ,
-    contents : contents.value,
-    starScore : rating.value,
-    photoUrl : "", //TODO s3 연결 하기
-  }
-  postReview(params,
-  ({data})=>{
-    console.log(data);
-    rating.value = 3;
-    contents.value = "";
-    emit("refresh")
-  },
-  (error) =>
-  {
-    console.log(error)
-  })
-}
+    aptId: props.aptId,
+    email: decoded.sub,
+    contents: contents.value,
+    starScore: rating.value,
+    image: image,
+  };
+  postReview(
+    params,
+    ({ data }) => {
+      console.log(data);
+      rating.value = 3;
+      contents.value = "";
+      emit("refresh");
+    },
+    (error) => {
+      console.log(error);
+    }
+  );
+};
 </script>
 
 <template>
@@ -59,6 +63,34 @@ const reviewPost = () => {
           ></v-rating>
         </v-col>
       </v-row>
+      <v-row>
+        <v-col align="center">
+          <v-img
+            max-width="400"
+            v-if="imageUrl"
+            :src="imageUrl"
+            alt="사진 프리뷰"
+            cover
+          />
+        </v-col>
+      </v-row>
+
+      <v-row>
+        <v-col>
+          <v-file-input
+            :rules="rules"
+            @change="previewImage"
+            v-model="image"
+            accept="image/png, image/jpeg, image/bmp"
+            placeholder="사진을 올려주세요"
+            prepend-icon="mdi-camera"
+            label="프로필 업로드"
+            @click:clear="imageUrl = ''"
+          >
+          </v-file-input>
+        </v-col>
+      </v-row>
+
       <v-row>
         <v-col>
           <v-textarea
