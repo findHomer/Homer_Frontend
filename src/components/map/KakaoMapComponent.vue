@@ -4,6 +4,7 @@ import { onMounted,watch } from "vue";
 import { useUserStore } from '@/components/stores/user-store';
 import { useSearchStore } from "@/stores/search"
 import { getMarkers,getMarkersByName,getLocation } from "@/api/map";
+import { storeToRefs } from "pinia";
 const { VITE_KAKAO_APP_KEY } = import.meta.env;
 const store = useUserStore()
 const searchStore = useSearchStore()
@@ -334,7 +335,8 @@ const makePins = function async(response) {
      // markerMapping.set(marker, element.aptId)
       
         kakao.maps.event.addListener(marker, 'click', function () {
-            store.aptId = element.aptId;
+            const {aptId} = storeToRefs(store) 
+            aptId.value = element.aptId;
 
             //선택 마커 변경시 기존선택마커 복구 및 선택마커 변경
             // if (selectedMarker != null) {

@@ -2,8 +2,9 @@
 import ReviewItemComponent from "@/components/review/ReviewItemComponent.vue";
 import ReviewWriteComponent from "./ReviewWriteComponent.vue";
 // import ReviewCardComponent from "../components/review/ReviewCardComponent.vue";
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { getReviews, deleteReview } from "../../api/review";
+import { storeToRefs } from "pinia";
 
 import { jwtDecode } from "jwt-decode";
 import { token , useUserStore } from "@/components/stores/user-store"
@@ -27,11 +28,15 @@ const reviewsByCreatedAt = computed(() => {
 
 // const aptId = "A10022970";
 // const aptId = props.aptId;
-const {aptId} = store
+const {aptId} = storeToRefs(store)
 
 onMounted(() => {
-  getReviewList(aptId)
+  getReviewList(aptId.value)
 });
+
+watch(aptId, () => {
+  getReviewList(aptId.value)
+})
 
 const getReviewList = (aptId) => {
   getReviews(
@@ -50,7 +55,7 @@ const deleteMyReview = (reviewId) => {
     reviewId,
     ({data}) =>{
       console.log(data);
-      getReviewList(aptId);
+      getReviewList(aptId.value);
     },
     (error) =>{
       console.log(error);
