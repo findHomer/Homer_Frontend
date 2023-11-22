@@ -20,6 +20,7 @@ const logout = function(){
       <!-- <v-avatar class="me-4" color="grey-darken-1" size="32"></v-avatar> -->
 
       <v-img style="width:auto; height:200px" src="/src/assets/chatgipt_logo_bg.png"></v-img>
+
       <v-text>Homer</v-text>
       <!-- <v-btn v-for="link in links" :key="link" :text="link" variant="text"></v-btn> -->
 

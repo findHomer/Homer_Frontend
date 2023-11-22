@@ -8,7 +8,7 @@ import { ref, watch, computed } from "vue";
 import { useChatRoomStore } from "@/stores/chatroom";
 import { storeToRefs } from "pinia";
 import ChatRoomInsideComponent from "../components/chat/ChatRoomInsideComponent.vue";
-
+import {useRoute} from "vue-router"
 const store = useChatRoomStore();
 
 const { isChat } = storeToRefs(store);
@@ -46,17 +46,24 @@ const chatWidth = ref(450);
 const cssChatWidth = computed(() => {
   return `${chatWidth.value + 50}px`;
 });
+
+const route = useRoute();
+
 </script>
 
 <template>
   <v-app id="inspire">
-    
-    <HeadingNavbar />
+    <HeadingNavbar/>
+    <v-main>
+      <NavigationDrawer />
+
+      <KakaoMapComponent v-if="route.name !== 'mypage'"/>
+   
+      <router-view></router-view>
+
+    </v-main>
   
-    <NavigationDrawer />
-  
-    <KakaoMapComponent />
-  
+
     <v-navigation-drawer
       v-model="select"
       location="right"
