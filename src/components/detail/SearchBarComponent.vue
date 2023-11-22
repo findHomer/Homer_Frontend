@@ -20,7 +20,7 @@ const searchApart = function () {
     store.searchNameDto.dongCode = code
     store.searchNameDto.aptName = searchName.value
     
-    store.clicked = true;
+    store.clicked = !store.clicked;
     
 }
 const clickBtn = function (btn) {
@@ -42,8 +42,9 @@ const clickType = function (type) {
 }
 
 const moveDong = function () {
+  
   store.dongCode = selectedSido.value + selectedSigungu.value + selectedDongupri.value
-  store.findDong = true;
+  store.findDong = !store.findDong;
 }
 
 const getSigunguList = async () => {

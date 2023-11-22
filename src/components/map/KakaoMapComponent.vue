@@ -247,27 +247,26 @@ addCategoryClickEvent();
   
 };
 watch(() => searchStore.clicked, async () => {
-  
-  const response = await getMarkersByName(searchStore.searchNameDto, searchStore.searchDto)
-    console.log(response);
+    console.log("호출1")
+    
+    const response = await getMarkersByName(searchStore.searchNameDto, searchStore.searchDto)
+
     makePins(response);
    
-  searchStore.clicked = false;
 });
 
 
 watch(() => searchStore.findDong, async () => {
+    console.log("호출2")
     try {
         const response = await getLocation(searchStore.dongCode)
         setCenter(response.data.lat, response.data.lng);
-        console.log(response);
+        
     }
     catch {
         console.log(searchStore.dongCode)
         console.log("해당지역 아파트정보가없습니다.")
-    } finally {
-        searchStore.findDong = false;
-    }
+    } 
     
   
 });
