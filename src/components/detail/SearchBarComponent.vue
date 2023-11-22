@@ -20,7 +20,7 @@ const searchApart = function () {
     store.searchNameDto.dongCode = code
     store.searchNameDto.aptName = searchName.value
     
-    store.clicked = true;
+    store.clicked = !store.clicked;
     
 }
 const clickBtn = function (btn) {
@@ -39,6 +39,12 @@ const clickType = function (type) {
         store.searchDto.aisleType = type;
     }
 
+}
+
+const moveDong = function () {
+  
+  store.dongCode = selectedSido.value + selectedSigungu.value + selectedDongupri.value
+  store.findDong = !store.findDong;
 }
 
 const getSigunguList = async () => {
@@ -79,6 +85,7 @@ onMounted(async () => {
     <v-row>
       <v-col>
         <v-select
+          class="selectbox"
           label="시도"
           :items="sido"
           item-title="name"
@@ -90,6 +97,7 @@ onMounted(async () => {
       </v-col>
       <v-col>
         <v-select
+        class="selectbox"
           label="시군구"
           :items="sigungu"
           item-title="name"
@@ -101,11 +109,13 @@ onMounted(async () => {
       </v-col>
       <v-col>
         <v-select
+        class="selectbox"
           label="동읍리"
           :items="dongupri"
           item-title="name"
           item-value="code"
           v-model="selectedDongupri"
+          @update:modelValue ="moveDong"
           variant="outlined"
         ></v-select>
       </v-col>
@@ -159,4 +169,6 @@ onMounted(async () => {
   </v-container>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+</style>
