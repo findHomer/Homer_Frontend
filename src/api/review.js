@@ -10,12 +10,18 @@ function getReviews(aptId, success, fail){
     local.get(`${baseUrl}/${aptId}`).then(success).catch(fail)
 }
 
-function postReview(review,image, success, fail){
+function postReview(review, image, success, fail){
     local.defaults.headers.common['Authorization'] = token.value
     const form = new FormData();
-    form.append("review", JSON.stringify(review));
-    form.append("image", image);
-    local.post(`${baseUrl}`, form).then(success).catch(fail)
+    form.append("review", new Blob([JSON.stringify(review)], { type: "application/json" }) );
+    if(image.value != null && image.value != undefined && image.value != ""){
+        console.log(image.value);
+        form.append("image", image.value[0]);
+    }else{
+        form.append("image", null);
+    }
+    local.defaults.headers.post['Content-Type'] = "multipart/form-data"
+    local.post(`${baseUrl}`, form ).then(success).catch(fail)
 }
 
 function modifyReview(review, success, fail){

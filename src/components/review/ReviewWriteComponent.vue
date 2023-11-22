@@ -25,10 +25,10 @@ const reviewPost = () => {
     email: decoded.sub,
     contents: contents.value,
     starScore: rating.value,
-    image: image,
   };
   postReview(
     params,
+    image,
     ({ data }) => {
       console.log(data);
       rating.value = 3;
