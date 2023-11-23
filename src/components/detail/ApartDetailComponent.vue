@@ -146,11 +146,11 @@ const removeBookmark = function(){
 
 <template>
   <v-container>
-    <v-row>
-      <v-col class="text-caption">{{ aptName }}</v-col>
-      <v-col>
-        <v-img v-if="bookmark" src="/src/assets/bookmark_picked.png" @click="removeBookmark"></v-img>
-        <v-img v-if="!bookmark" src="/src/assets/bookmark.png" @click="addBookmark"></v-img>
+    <v-row align="center">
+      <v-col cols=10 class="font-weight-black text-center font-weight-large">{{ aptName }}</v-col>
+      <v-col cols=2>
+        <v-img v-if="bookmark" width="60px" src="/src/assets/bookmark_picked.png" @click="removeBookmark"></v-img>
+        <v-img v-if="!bookmark" width="60px" src="/src/assets/bookmark.png" @click="addBookmark"></v-img>
     </v-col>
     </v-row>
     <v-row><div id="roadview" style="width: 100%; height: 300px"></div></v-row>

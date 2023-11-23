@@ -1,7 +1,6 @@
 <script setup>
 import { ref,onMounted } from 'vue'
 import { getBookmarks } from '@/api/mypage'
-import { getApart } from '@/api/apart'
 import { useUserStore } from '@/components/stores/user-store'
 import { storeToRefs } from 'pinia'
 const userStore = useUserStore();

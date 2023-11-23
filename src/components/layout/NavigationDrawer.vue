@@ -3,9 +3,10 @@ import { ref } from "vue";
 import ApartDetailComponent from "../detail/ApartDetailComponent.vue";
 import SearchBarComponent from "../detail/SearchBarComponent.vue";
 import ReviewViewComponent from "@/components/review/ReviewViewComponent.vue";
+import { useUserStore} from '@/components/stores/user-store'
 const drawer = ref(null);
-import { useUserStore } from "@/components/stores/user-store"
 const tab = ref(null);
+
 const userStore = useUserStore();
 </script>
 
@@ -31,7 +32,7 @@ const userStore = useUserStore();
     </v-card>
     </v-row>
 
-    <v-row class ="mt-6 scrollable-content">
+    <v-row v-if="userStore.aptId!=''" class ="mt-6 scrollable-content">
     <v-card >
       <v-tabs
         v-model="tab"

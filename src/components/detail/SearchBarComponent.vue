@@ -15,7 +15,20 @@ const selectedDongupri = ref("");
 const selectedButton = ref('');
 const searchName = ref('');
 const selectedType = ref("");
-const ticks = ref(["0,0.5,1,1.5,2,2.5,3"])
+
+const tickLabelsPark = ref({
+  0: 0,
+  1: 1,
+  2: 2,
+  3: 3
+});
+
+const tickLabelsHouse = ref({
+  0: 0,
+  1: 300,
+  2: 600,
+  3: 1000
+});
 const searchApart = function () {
     const code = selectedSido.value + selectedSigungu.value + selectedDongupri.value
     store.searchNameDto.dongCode = code
@@ -23,7 +36,13 @@ const searchApart = function () {
     
     store.clicked = !store.clicked;
     
+
 }
+
+const filterSearch = function () {
+  store.clicked = !store.clicked;
+}
+
 const clickBtn = function (btn) {
     if (btn === selectedButton.value) {
         selectedButton.value=''
@@ -129,7 +148,8 @@ onMounted(async () => {
         ><v-btn :variant="selectedButton =='carCount'? 'elevated' :'outlined' " 
         flat="true"
         color="#093248"
-        @click="clickBtn('carCount')">
+        @click="clickBtn('carCount')"
+        @change="filterSearch">
           주차대수
         </v-btn></v-col
       >
@@ -148,8 +168,8 @@ onMounted(async () => {
     >
 
     <div v-if="selectedButton=='carCount'">
-      <v-row justify-center><v-col>주차대수</v-col><v-col>{{store.searchDto.parkPerHouse}}</v-col></v-row>
-      <v-row><v-slider ticks="always" tick-labels="[0,1,2,3]" v-model="store.searchDto.parkPerHouse" min=0 max=3 step=0.1></v-slider></v-row>
+      <v-row justify-center><v-col>주차대수         {{store.searchDto.parkPerHouse}}  이상</v-col></v-row>
+      <v-row><v-slider show-ticks="always" :ticks="tickLabelsPark" v-model="store.searchDto.parkPerHouse" min=0 max=3 step=0.1></v-slider></v-row>
       
     </div>
     <div  v-if="selectedButton=='type'">
@@ -180,7 +200,7 @@ onMounted(async () => {
     </div>
     <div  v-if="selectedButton=='householdCount'">
       <v-row justify-center><v-col>세대수</v-col><v-col>{{store.searchDto.householdCount}}</v-col></v-row>
-      <v-row><v-slider v-model="store.searchDto.householdCount" min="0" max="1000" step="10"></v-slider></v-row>
+      <v-row><v-slider show-ticks="always" :ticks="tickLabelsHouse" v-model="store.searchDto.householdCount" min=0 max=1000 step=10></v-slider></v-row>
     </div>
   </v-container>
 </template>

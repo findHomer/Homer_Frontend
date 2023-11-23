@@ -10,13 +10,17 @@ import { storeToRefs } from "pinia";
 import ChatRoomInsideComponent from "../components/chat/ChatRoomInsideComponent.vue";
 import { useRoute } from "vue-router";
 import { refresh } from "@/api/user";
+import { useUserStore} from '@/components/stores/user-store'
 const store = useChatRoomStore();
+const userStore = useUserStore();
 
 const { isChat } = storeToRefs(store);
 const select = ref(false);
 
 onMounted(() => {
   refresh();
+  const { aptId } = storeToRefs(userStore)
+  aptId.value=''
 })
 
 
