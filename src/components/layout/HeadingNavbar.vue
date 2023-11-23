@@ -24,20 +24,27 @@ const logout = function(){
 
       <v-spacer> </v-spacer>
      
-      <v-col class="flex-end" v-if="userStore.menuList[0].show">
-        <LoginFormModal />
-      </v-col>
-      <v-col  class = "flex-end" v-if="userStore.menuList[1].show" max-width="80">
-        <RegisterFormModal />
-      </v-col>
-      <v-col  v-if="userStore.menuList[2].show">
+     <v-col class="d-flex justify-end">
+     
+      <template v-if="userStore.menuList[0].show">
+        <LoginFormModal class="align-center" />
+      </template>
+      <template v-if="userStore.menuList[1].show" max-width="80">
+        <RegisterFormModal class="align-center" />
+      </template>
+
+      <template  v-if="userStore.menuList[2].show">
       <RouterLink :to="userStore.menuList[2].routeName">
-        {{ userStore.menuList[2].name }}
+        <v-btn color="black">
+          {{ userStore.menuList[2].name }}
+        </v-btn>
       </RouterLink>
-      </v-col>
-      <v-col @click=" logout" v-if="userStore.menuList[3].show">
-        {{ userStore.menuList[3].name }}
-      </v-col>
+      </template>
+      <template v-if="userStore.menuList[3].show">
+        <v-btn @click=" logout" >{{ userStore.menuList[3].name }}</v-btn>
+      </template>
+
+     </v-col>
 
     </v-container>
   </v-app-bar>

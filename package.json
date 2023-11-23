@@ -14,6 +14,7 @@
     "jwt-decode": "^4.0.0",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.0",
+    "sockjs-client": "^1.6.1",
     "vue": "^3.3.4",
     "vue-chartjs": "^5.2.0",
     "vue-kakao-sdk": "^0.2.5",
@@ -21,7 +22,8 @@
     "vue-router": "^4.2.5",
     "vue3-charts": "^1.1.33",
     "vue3-kakao-sdk": "^0.2.1",
-    "vuetify": "^3.4.1"
+    "vuetify": "^3.4.1",
+    "webstomp-client": "^1.2.6"
   },
   "devDependencies": {
     "@mdi/font": "^7.3.67",

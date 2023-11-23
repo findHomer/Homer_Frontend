@@ -1,8 +1,13 @@
 <script setup>
 import { ref, watch } from "vue";
-
+// import { storeToRefs } from "pinia";
 // import { useRouter } from "vue-router";
 import ChatRoomListComponent from "../components/chat/ChatRoomListComponent.vue";
+// import { useUserStore } from "@/components/stores/user-store";
+// import { createChatroom } from "@/api/chat";
+// import { getAllchat } from "../api/chat";
+// import { getApart } from "@/api/apart";
+// import { findAllRoom } from "../api/chat";
 
 // const router = useRouter();
 const select = ref(false);
@@ -17,7 +22,10 @@ const btnClass = ref({
 });
 
 const selection = () => {
+  console.log("선택");
   select.value = !select.value;
+
+  //TODO 자동 채팅방 생성
 };
 
 watch(select, () => {

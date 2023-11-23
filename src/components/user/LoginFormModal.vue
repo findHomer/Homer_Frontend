@@ -19,14 +19,13 @@ const doLogin = async()=> {
 
 </script>
 <template>
-  <v-row justify="center">
     <v-dialog v-model="dialog" persistent width="512">
       <template v-slot:activator="{ props }">
         <v-btn v-bind="props"> 로그인 </v-btn>
       </template>
 
-      <v-card>
-        <v-card-title class="text-center">
+      <v-card >
+        <v-card-title class="text-center pt-10">
           <span class="text-h5">Login</span>
         </v-card-title>
         <v-card-text>
@@ -50,8 +49,8 @@ const doLogin = async()=> {
             </v-row>
             <v-row>
               <v-col class="text-center">
-                <v-btn color="blue-darken-1" variant="text" @click="dialog = false">
-                  Register
+                <v-btn color="red" variant="text" @click="dialog = false">
+                  close
                 </v-btn>
               </v-col>
             </v-row>
@@ -59,6 +58,5 @@ const doLogin = async()=> {
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-row>
 </template>
 <style scoped></style>

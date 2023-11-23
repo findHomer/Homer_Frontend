@@ -15,14 +15,14 @@ const doRegist = function(){
 }
 </script>
 <template>
-  <v-row justify="center">
+
     <v-dialog v-model="dialog" persistent width="512">
       <template v-slot:activator="{ props }">
         <v-btn v-bind="props"> 회원 가입 </v-btn>
       </template>
 
       <v-card>
-        <v-card-title class="text-center">
+        <v-card-title class="text-center pt-10">
           <span class="text-h5">회원 가입</span>
         </v-card-title>
         <v-card-text>
@@ -47,7 +47,7 @@ const doRegist = function(){
               <v-col cols="12" sm="6">
                 <v-text-field v-model = "registDto.nickname" label="nickname*" required></v-text-field>
               </v-col>
-              <v-col cols="12" sm="6">
+              <v-col cols="12">
                 <v-text-field type="date" v-model = "registDto.birth" label="birth date*" required></v-text-field>
               </v-col>
               <v-col>
@@ -69,6 +69,6 @@ const doRegist = function(){
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-row>
+
 </template>
 <style scoped></style>
