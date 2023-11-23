@@ -15,7 +15,7 @@ const doRegist = function(){
 }
 </script>
 <template>
-  <v-row justify="center">
+
     <v-dialog v-model="dialog" persistent width="512">
       <template v-slot:activator="{ props }">
         <v-btn v-bind="props"> 회원 가입 </v-btn>
@@ -69,6 +69,6 @@ const doRegist = function(){
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-row>
+
 </template>
 <style scoped></style>
