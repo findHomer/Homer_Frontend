@@ -13,7 +13,7 @@ const logout = function(){
 
 <template>
   <v-app-bar flat>
-    <v-container class="d-flex align-center">
+    <v-container class="d-flex header align-center">
       <!-- <v-avatar class="me-4" color="grey-darken-1" size="32"></v-avatar> -->
       <v-col cols="2">
       <router-link to="/">
@@ -24,10 +24,10 @@ const logout = function(){
 
       <v-spacer> </v-spacer>
      
-      <v-col v-if="userStore.menuList[0].show">
+      <v-col class="flex-end" v-if="userStore.menuList[0].show">
         <LoginFormModal />
       </v-col>
-      <v-col  v-if="userStore.menuList[1].show" max-width="80">
+      <v-col  class = "flex-end" v-if="userStore.menuList[1].show" max-width="80">
         <RegisterFormModal />
       </v-col>
       <v-col  v-if="userStore.menuList[2].show">
@@ -43,4 +43,9 @@ const logout = function(){
   </v-app-bar>
 </template>
 
-<style scoped></style>
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap');
+::v-deep .header{
+  font-family: 'Noto Sans KR', sans-serif;
+}
+</style>

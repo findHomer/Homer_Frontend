@@ -146,7 +146,7 @@ const removeBookmark = function(){
 
 <template>
   <v-container>
-    <v-row align="center">
+    <v-row>
       <v-col cols=10 class="font-weight-black text-center font-weight-large">{{ aptName }}</v-col>
       <v-col cols=2>
         <v-img v-if="bookmark" width="60px" src="/src/assets/bookmark_picked.png" @click="removeBookmark"></v-img>
@@ -203,8 +203,6 @@ const removeBookmark = function(){
 </template>
 
 <style scoped>
-
-
 
 .table-container {
   width: 360px;

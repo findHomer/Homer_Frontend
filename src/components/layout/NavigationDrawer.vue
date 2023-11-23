@@ -66,16 +66,27 @@ const userStore = useUserStore();
 </template>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap');
+/* ::v-deep .scrollable-content{
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+::v-deep .scrollable-content{
+  font-family: 'Noto Sans KR', sans-serif;
+} */
+
 .search-box {
   position: sticky;
   top: 0; /* 상단에 고정 */
   z-index: 100; /* 다른 요소들보다 위에 보이도록 */
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
 .scrollable-content {
   overflow-y: auto; /* 세로 스크롤 가능 */
   height: 100%; /* 전체 높이 설정 */
-  
+  font-family: 'Noto Sans KR', sans-serif;
+  text-align:center;
 }
 
 /*전체 페이지의 스크롤바 스타일*/

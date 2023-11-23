@@ -49,6 +49,8 @@ const clickBtn = function (btn) {
     } else {
         selectedButton.value = btn;
     }
+    
+    
 }
 
 const clickType = function (type) {
@@ -58,6 +60,8 @@ const clickType = function (type) {
     } else {
         store.searchDto.aisleType = type;
     }
+
+    store.clicked = !store.clicked;
 
 }
 
@@ -146,7 +150,7 @@ onMounted(async () => {
     <v-row justify-space-around>
       <v-col
         ><v-btn :variant="selectedButton =='carCount'? 'elevated' :'outlined' " 
-        flat="true"
+        
         color="#093248"
         @click="clickBtn('carCount')"
         @change="filterSearch">
@@ -169,7 +173,7 @@ onMounted(async () => {
 
     <div v-if="selectedButton=='carCount'">
       <v-row justify-center><v-col>주차대수         {{store.searchDto.parkPerHouse}}  이상</v-col></v-row>
-      <v-row><v-slider show-ticks="always" :ticks="tickLabelsPark" v-model="store.searchDto.parkPerHouse" min=0 max=3 step=0.1></v-slider></v-row>
+      <v-row><v-slider @end="filterSearch" color = #92A3DB class="custom-slider" show-ticks="always" :ticks="tickLabelsPark" v-model="store.searchDto.parkPerHouse" min=0 max=3 step=0.1></v-slider></v-row>
       
     </div>
     <div  v-if="selectedButton=='type'">
@@ -200,11 +204,68 @@ onMounted(async () => {
     </div>
     <div  v-if="selectedButton=='householdCount'">
       <v-row justify-center><v-col>세대수</v-col><v-col>{{store.searchDto.householdCount}}</v-col></v-row>
-      <v-row><v-slider show-ticks="always" :ticks="tickLabelsHouse" v-model="store.searchDto.householdCount" min=0 max=1000 step=10></v-slider></v-row>
+      <v-row><v-slider  @end="filterSearch" color = #92A3DB show-ticks="always" :ticks="tickLabelsHouse" v-model="store.searchDto.householdCount" min=0 max=1000 step=10></v-slider></v-row>
     </div>
   </v-container>
 </template>
 
 <style scoped>
 
+
+.custom-slider {
+  --trackHeight: 0.5rem;
+  --thumbRadius: 1rem;
+}
+
+/* style the input element with type "range" */
+.custom-slider input[type="range"] {
+  position: relative;
+  appearance: none;
+  /* pointer-events: none; */
+  border-radius: 999px;
+  z-index: 0;
+}
+
+/* ::before element to replace the slider track */
+.custom-slider input[type="range"]::before {
+  content: "";
+  position: absolute;
+  width: var(--ProgressPercent, 100%);
+  height: 100%;
+  background: #00865a;
+  /* z-index: -1; */
+  pointer-events: none;
+  border-radius: 999px;
+}
+
+/* `::-webkit-slider-runnable-track` targets the track (background) of a range slider in chrome and safari browsers. */
+.custom-slider input[type="range"]::-webkit-slider-runnable-track {
+  appearance: none;
+  background: #005a3c;
+  height: var(--trackHeight);
+  border-radius: 999px;
+}
+
+/* `::-moz-range-track` targets the track (background) of a range slider in Mozilla Firefox. */
+.custom-slider input[type="range"]::-moz-range-track {
+  appearance: none;
+  background: #005a3c;
+  height: var(--trackHeight);
+  border-radius: 999px;
+}
+
+.custom-slider input[type="range"]::-webkit-slider-thumb {
+  position: relative;
+  /* top: 50%; 
+  transform: translate(0, -50%);
+  */
+  width: var(--thumbRadius);
+  height: var(--thumbRadius);
+  margin-top: calc((var(--trackHeight) - var(--thumbRadius)) / 2);
+  background: #00bd7e;
+  border-radius: 999px;
+  pointer-events: all;
+  appearance: none;
+  z-index: 1;
+}
 </style>

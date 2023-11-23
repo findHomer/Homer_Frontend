@@ -13,7 +13,7 @@ const tab = ref(null);
   </v-tabs>
 
   <v-container class="d-flex flex-column" fluid>
-    <v-row align="center">
+    <v-row >
       <v-col>
         <v-window class="pa-1" v-model="tab">
           <v-window-item :value="1">

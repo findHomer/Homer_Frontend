@@ -80,6 +80,7 @@ const route = useRoute();
       disable-resize-watcher
       border="0"
       elevation="0"
+      
     >
       <v-btn
         class="chat-btn"
@@ -104,7 +105,7 @@ const route = useRoute();
         </v-container>
       </v-btn>
 
-      <v-container class="d-flex align-end h-100">
+      <v-container class="d-flex align-end h-100 chat-container">
         <v-card height="600" class="rounded-xl">
           <!-- chat id 처리 하기 -->
           <template v-if="!isChat">
@@ -121,10 +122,17 @@ const route = useRoute();
 </template>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap');
+
+
+::v-deep .chat-container{
+  font-family: 'Noto Sans KR', sans-serif;
+}
 .chat-btn {
   position: fixed;
   bottom: 1rem;
   right: v-bind(cssChatWidth);
   border-radius: 20rem;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 </style>

@@ -24,7 +24,7 @@ function getMarkers(bounds, searchDto, success, fail) {
 
 
 function getMarkersByName(searchNameDto, searchDto, success, fail) {
-    console.log(searchNameDto)
+    
     const param = {
         "name": searchNameDto.aptName,
         "dongCode": searchNameDto.dongCode,
@@ -32,14 +32,14 @@ function getMarkersByName(searchNameDto, searchDto, success, fail) {
         "householdCount": searchDto.householdCount,
         "parkPerHouse":searchDto.parkPerHouse
     }
-    console.log(searchNameDto)
+    
     return instance.get(`/apartments/locations/names`,{params: param})
     .then(success)
     .catch(fail)
 }
 
 function getLocation(dongCode, success, fail) {
-    console.log(token.value);
+   
     //instance.defaults.headers.common['Authorization'] =token.value
     
     return instance.get(`/apartments/locations/dong?dongCode=${dongCode}`)

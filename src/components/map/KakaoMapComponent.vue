@@ -187,9 +187,18 @@ function changeCategoryClass(el) {
 //****************************객체 종료****************************** *//
 
 const initMap = async() => {
+
+    let lat = 37.50143360
+    let lng = 127.0403454
+    navigator.geolocation.getCurrentPosition((position) => {//본인 위치로 시작하기위해 사용
+        lat = position.coords.latitude
+        lng = position.coords.latitude
+	})
+
+
   const container = document.getElementById("map");
   const options = {
-    center: new kakao.maps.LatLng(33.450701, 126.570667),
+    center: new kakao.maps.LatLng(lat, lng),
     level: 3,
   }; //지도 객체는 반응형 관리 대상이 아니므로 initMap에서 선언합니다.
   map = new kakao.maps.Map(container, options);
@@ -292,11 +301,12 @@ onMounted(async () => {
     script.onload = () => kakao.maps.load(initMap);
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${VITE_KAKAO_APP_KEY}&libraries=services,clusterer,drawing`;
     document.head.appendChild(script);
-
   }
+});
+  
 
   //refresh();
-});
+
 
 const makePins = function async(response) {
   const newMarkerIds = new Set(response.data.map(item => item.aptId));
@@ -345,20 +355,11 @@ const makePins = function async(response) {
             const {aptId} = storeToRefs(store) 
             aptId.value = element.aptId;
 
-            //선택 마커 변경시 기존선택마커 복구 및 선택마커 변경
-            // if (selectedMarker != null) {
-            //     selectedMarker.setOpacity(0.7)
-            // }
-            // marker.setOpacity(1)
-            // selectedMarker = marker
-           
-            
-            //기존인포윈도우,이미지 삭제
             if (clickedInfo!=null) {
                 clickedInfo.close();
             }
 
-            var iwContent = `<div style="padding:5px;">${element.aptName}</div>`, // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
+            var iwContent = `<div  class="info-class" style="padding:5px;">${element.aptName}</div>`, // 인포윈도우에 표출될 내용으로 HTML 문자열이나 document element가 가능합니다
             iwPosition = new kakao.maps.LatLng(element.lat, element.lng); //인포윈도우 표시 위치입니다
 
          // 인포윈도우를 생성합니다
@@ -370,10 +371,25 @@ const makePins = function async(response) {
             clickedInfo = infowindow
             //인포윈도우,이미지 변경 생성
             infowindow.open(map, marker); 
-            console.log(iwContent);
+
+            //info Window 투명하게 설정
+            var childElement = document.querySelector('.info-class');
+
+            if (childElement) {
+                // 부모의 부모 요소 찾기
+                var grandparentElement = childElement.parentNode.parentNode;
+                
+                // 부모의 부모 요소에 클래스 추가
+                childElement.parentNode.style.position =''
+                grandparentElement.style.alignItems='center'
+                grandparentElement.style.border = '1px solid #ddd';
+                grandparentElement.style.borderRadius = '8px';
+
+            }
 
             setCenter(element.lat, element.lng)
-          
+            // 대상 자식 요소 선택
+
         })
       
      
@@ -431,8 +447,10 @@ const makePins = function async(response) {
 </template>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap');
 
-.map_wrap, .map_wrap * {margin:0; padding:0;font-family:'Malgun Gothic',dotum,'돋움',sans-serif;font-size:12px;}
+
+.map_wrap, .map_wrap * {margin:0; padding:0;font-family:'Noto Sans KR', sans-serif;font-size:12px; text-align: center;} /* Malgun Gothic',dotum,'돋움',sans-serif*/
 .map_wrap {position:relative;width:100%;height:100%;}
 #category {position:absolute;top:20px;left:420px;border-radius: 5px; border:1px solid #909090;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.4);background: #fff;overflow: hidden;z-index: 2;}
 #category li {float:left;list-style: none;width:50px;border-right:1px solid #acacac;padding:6px 0;text-align: center; cursor: pointer;}
