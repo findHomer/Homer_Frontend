@@ -22,7 +22,7 @@ const doRegist = function(){
       </template>
 
       <v-card>
-        <v-card-title class="text-center">
+        <v-card-title class="text-center pt-10">
           <span class="text-h5">회원 가입</span>
         </v-card-title>
         <v-card-text>
@@ -47,7 +47,7 @@ const doRegist = function(){
               <v-col cols="12" sm="6">
                 <v-text-field v-model = "registDto.nickname" label="nickname*" required></v-text-field>
               </v-col>
-              <v-col cols="12" sm="6">
+              <v-col cols="12">
                 <v-text-field type="date" v-model = "registDto.birth" label="birth date*" required></v-text-field>
               </v-col>
               <v-col>
