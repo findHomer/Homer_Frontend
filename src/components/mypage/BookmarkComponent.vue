@@ -1,36 +1,60 @@
 <script setup>
-import { ref } from 'vue'
-
+import { ref,onMounted } from 'vue'
+import { getBookmarks } from '@/api/mypage'
+import { getApart } from '@/api/apart'
+import { useUserStore } from '@/components/stores/user-store'
+import { storeToRefs } from 'pinia'
+const userStore = useUserStore();
 const items = ref([]);
 
-const api = async () => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(Array.from({ length: 10 }, (k, v) => v + items.value.at(-1) + 1));
-    }, 1000);
-  });
-};
 
-const load = async ({ done }) => {
-  // Perform API call
-  const res = await api();
 
-  items.value.push(...res);
 
-  done("ok");
-};
+
+
+const doInfo = (id) =>{
+  console.log(id)
+  
+  const { aptId } = storeToRefs(userStore);
+  aptId.value = id;
+}
+onMounted(async() => {
+  const response  = await getBookmarks()
+  items.value = response.data
+  
+})
+
+
 </script>
 
 <template>
-  <div>
-    <v-infinite-scroll :height="300" :items="items" :onLoad="load">
-      <template v-for="(item, index) in items" :key="item">
-        <div :class="['pa-2', index % 2 === 0 ? 'bg-grey-lighten-2' : '']">
-          Item #{{ item }}
-        </div>
-      </template>
-    </v-infinite-scroll>
-  </div>
+  
+    <v-card v-for="item in items" :key="item.aptId"
+    class="mx-auto"
+    max-width="400"
+  >
+    <v-img
+      class="align-end text-white"
+      height="200"
+      src="/src/assets/bookmark.png"
+      cover
+    >
+      <v-card-title color="black">{{ item.aptName }}</v-card-title>
+    </v-img>
+
+    <v-card-subtitle class="pt-4">
+      {{item.roadAddr}}
+    </v-card-subtitle>
+
+    
+
+    <v-card-actions>
+      <v-btn  @click="doInfo(item.aptId)" color="orange">
+        상세정보
+      </v-btn>
+    </v-card-actions>
+  </v-card>
+ 
 </template>
 
 <style scoped></style>

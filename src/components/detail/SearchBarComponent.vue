@@ -14,7 +14,8 @@ const selectedSigungu = ref("");
 const selectedDongupri = ref("");
 const selectedButton = ref('');
 const searchName = ref('');
-
+const selectedType = ref("");
+const ticks = ref(["0,0.5,1,1.5,2,2.5,3"])
 const searchApart = function () {
     const code = selectedSido.value + selectedSigungu.value + selectedDongupri.value
     store.searchNameDto.dongCode = code
@@ -78,14 +79,15 @@ onMounted(async () => {
 
 <template>
   <v-container>
-    <v-row>
+    <!-- <v-row>
       <v-text-field v-model="searchName"></v-text-field>
       <v-btn @click="searchApart">검색</v-btn>
-    </v-row>
+    </v-row> -->
     <v-row>
       <v-col>
         <v-select
-          class="selectbox"
+        :menu-props="{top:true,offsetY:true}"
+          class="selectbox text-body-1"
           label="시도"
           :items="sido"
           item-title="name"
@@ -120,21 +122,25 @@ onMounted(async () => {
         ></v-select>
       </v-col>
     </v-row>
-
+    <v-row><v-divider></v-divider></v-row>
+    
     <v-row justify-space-around>
       <v-col
-        ><v-btn :outlined="selectedButton !== 'carCount'" @click="clickBtn('carCount')">
+        ><v-btn :variant="selectedButton =='carCount'? 'elevated' :'outlined' " 
+        flat="true"
+        color="#093248"
+        @click="clickBtn('carCount')">
           주차대수
         </v-btn></v-col
       >
       <v-col
-        ><v-btn :outlined="selectedButton!=='type'" @click="clickBtn('type')">
+        ><v-btn :variant="selectedButton =='type'? 'elevated' :'outlined'" @click="clickBtn('type')">
           현관구조
         </v-btn></v-col
       >
       <v-col
         ><v-btn
-        :outlined="selectedButton !== 'householdCount'" @click="clickBtn('householdCount')">
+        :variant="selectedButton =='householdCount'?'elevated' :'outlined'" @click="clickBtn('householdCount')">
         
           세대수
         </v-btn></v-col
@@ -143,7 +149,7 @@ onMounted(async () => {
 
     <div v-if="selectedButton=='carCount'">
       <v-row justify-center><v-col>주차대수</v-col><v-col>{{store.searchDto.parkPerHouse}}</v-col></v-row>
-      <v-row><v-slider v-model="store.searchDto.parkPerHouse" min="0" max="3" step="0.1"></v-slider></v-row>
+      <v-row><v-slider ticks="always" tick-labels="[0,1,2,3]" v-model="store.searchDto.parkPerHouse" min=0 max=3 step=0.1></v-slider></v-row>
       
     </div>
     <div  v-if="selectedButton=='type'">
@@ -152,13 +158,23 @@ onMounted(async () => {
       </v-row>
       <v-row>
         <v-col>
-          <v-btn  :varaint="selectedButton=='계단식'?'outlined':''" @click="clickType('계단식')"> 계단식 </v-btn>
+          <v-btn 
+          color="#92A3DB"
+          :variant="store.searchDto.aisleType =='계단식'? 'elevated' :'outlined'"
+          @click="clickType('계단식')"> 계단식 </v-btn>
         </v-col>
         <v-col>
-          <v-btn @click="clickType('복도식')"> 복도식 </v-btn>
+          <v-btn 
+          color="#92A3DB"
+          :variant="store.searchDto.aisleType =='복도식'? 'elevated' :'outlined'"
+          @click="clickType('복도식')"> 복도식 </v-btn>
         </v-col>
         <v-col>
-          <v-btn @click="clickType('복합식')"> 복합식 </v-btn>
+          
+          <v-btn 
+          color="#92A3DB"
+          :variant="store.searchDto.aisleType =='복합식'? 'elevated' :'outlined'"
+          @click="clickType('복합식')"> 복합식 </v-btn>
         </v-col>
       </v-row>
     </div>

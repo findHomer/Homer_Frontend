@@ -20,4 +20,11 @@ const changeProfile = (profile, success, fail) => {
     .then(success)
     .catch(fail)
 }
-export { getMyInfo, changeProfile}
+
+const getBookmarks = (success,fail) => {
+    return instance.get(`/bookmarks`)
+        .then(success)
+        .catch(fail)
+    
+}
+export { getMyInfo, changeProfile, getBookmarks}

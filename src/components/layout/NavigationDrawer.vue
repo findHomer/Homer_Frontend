@@ -4,45 +4,102 @@ import ApartDetailComponent from "../detail/ApartDetailComponent.vue";
 import SearchBarComponent from "../detail/SearchBarComponent.vue";
 import ReviewViewComponent from "@/components/review/ReviewViewComponent.vue";
 const drawer = ref(null);
-
-const tab= ref(null);
+import { useUserStore } from "@/components/stores/user-store"
+const tab = ref(null);
+const userStore = useUserStore();
 </script>
 
 <template>
-
-  <v-navigation-drawer width="400" v-model="drawer" :disable-resize-watcher="true" permanent :scrim="false">
-    <v-sheet color="grey-lighten-4">
+  
+  <v-navigation-drawer 
+    color="rgba(0, 0, 255, 0.0)"
+    border="0"
+    margin-left="10px"
+    elevation="0"
+    width="400"
+    overflow-y="hidden"
+    v-model="drawer" 
+    :disable-resize-watcher="true"
+    floating 
+    permanent="true"
+    class="rounded-xl pa-4"
+    :scrim="false">
+    <v-container  class="h-100 overflow-hidden">
+    <v-row>
+    <v-card class="search-box">
       <SearchBarComponent/>
-    </v-sheet>
+    </v-card>
+    </v-row>
 
-    <v-divider></v-divider>
-    <v-tabs
-      v-model="tab"
-      color="deep-purple-accent-4"
-      align-tabs="center"
-    >
-    <v-tab :value="1">아파트 정보</v-tab>
-    <v-tab :value="2">리뷰</v-tab>
-  </v-tabs>
-    <v-window v-model="tab">
-    <v-window-item :key="1" :value="1">
+    <v-row class ="mt-6 scrollable-content">
+    <v-card >
+      <v-tabs
+        v-model="tab"
+        color="#92A3DB"
+        align-tabs="center"
+      >
+      <v-tab :value="1">아파트 정보</v-tab>
+      <v-tab :value="2">리뷰</v-tab>
+    </v-tabs>
+  
     
-      <ApartDetailComponent/>
-    
-    </v-window-item>
+      <v-window v-model="tab">
+      <v-window-item :key="1" :value="1">
+      <v-row>
+        <ApartDetailComponent/>
+      </v-row>
+      </v-window-item>
 
-    <v-window-item :key="2" :value="2">
-    
-      <ReviewViewComponent/>
-   
-    </v-window-item>
-  </v-window>
-    
-  </v-navigation-drawer>
+      <v-window-item :key="2" :value="2">
+      <v-row>
+        <ReviewViewComponent/>
+      </v-row>
+      </v-window-item>
+      </v-window>
+    </v-card>
+  </v-row>
+      </v-container>
+    </v-navigation-drawer>
 
   
 </template>
 
 <style scoped>
+.search-box {
+  position: sticky;
+  top: 0; /* 상단에 고정 */
+  z-index: 100; /* 다른 요소들보다 위에 보이도록 */
+}
+
+.scrollable-content {
+  overflow-y: auto; /* 세로 스크롤 가능 */
+  height: 100%; /* 전체 높이 설정 */
+  
+}
+
+/*전체 페이지의 스크롤바 스타일*/
+
+::v-deep ::-webkit-scrollbar {
+  width: 5px;  
+}
+
+/* 스크롤바 트랙 (스크롤바 배경) */
+::v-deep ::-webkit-scrollbar-track {
+  background-color: transparent; /* 트랙을 투명하게 */
+}
+
+/* 스크롤바 핸들 (움직이는 부분) */
+::v-deep ::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.4); /* 색상을 약간 더 짙게 */
+  border-radius: 6px; /* 둥근 모서리를 더욱 둥글게 */
+  transition: background-color 0.3s ease; /* 부드러운 색상 전환 효과 */
+}
+
+/* 스크롤바 핸들을 마우스로 잡았을 때 */
+::v-deep ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.6); /* 마우스 오버시 색상을 더 짙게 변경 */
+}
+
+
 
 </style>

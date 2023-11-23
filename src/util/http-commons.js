@@ -21,7 +21,7 @@ instance.defaults.headers.put['Content-Type'] = 'application/json'
 
 // Request, Response 시 설정한 내용을 적용.
 instance.interceptors.request.use(async(config) => {
-    console.log("요청전 토큰 " + token.value);
+   
     instance.defaults.headers.common['Authorization']=token.value;
     return config
 }), (error) => {

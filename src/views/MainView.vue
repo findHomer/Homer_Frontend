@@ -9,13 +9,13 @@ import { useChatRoomStore } from "@/stores/chatroom";
 import { storeToRefs } from "pinia";
 import ChatRoomInsideComponent from "../components/chat/ChatRoomInsideComponent.vue";
 import { useRoute } from "vue-router";
-import {refresh} from "@/api/user";
+import { refresh } from "@/api/user";
 const store = useChatRoomStore();
 
 const { isChat } = storeToRefs(store);
 const select = ref(false);
 
-onMounted(()=>{
+onMounted(() => {
   refresh();
 })
 
@@ -60,13 +60,14 @@ const route = useRoute();
 <template>
   <v-app id="inspire">
     <HeadingNavbar />
-    <v-main class="pe-0">
+    <v-main class="px-0">
       <NavigationDrawer />
-      <KakaoMapComponent v-if="route.name !== 'myPage'" />
+      <KakaoMapComponent v-show="route.name !== 'myPage'" />
       <router-view></router-view>
     </v-main>
 
     <v-navigation-drawer
+      
       v-model="select"
       location="right"
       :scrim="false"

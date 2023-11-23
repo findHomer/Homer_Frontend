@@ -147,24 +147,26 @@ const removeBookmark = function(){
 <template>
   <v-container>
     <v-row>
-      <v-col>{{ aptName }}</v-col>
+      <v-col class="text-caption">{{ aptName }}</v-col>
       <v-col>
         <v-img v-if="bookmark" src="/src/assets/bookmark_picked.png" @click="removeBookmark"></v-img>
         <v-img v-if="!bookmark" src="/src/assets/bookmark.png" @click="addBookmark"></v-img>
     </v-col>
     </v-row>
-
+    <v-row><div id="roadview" style="width: 100%; height: 300px"></div></v-row>
+    
+   
     <v-row v-for="(group, index) in filteredItems" :key="index">
       <v-col v-for="item in group" :key="item[0]">
         {{ item[1] }}
       </v-col>
     </v-row>
 
-    <v-row> </v-row>
+    
     <v-row>면적별(m^2)</v-row>
-    <v-tabs v-model="tab" color="deep-purple-accent-4" align-tabs="center">
+    <v-tabs v-model="tab" color="#92A3DB" align-tabs="center">
       <v-tab v-for="(dealInfo, index) in dealInfos" :key="index">{{
-        dealInfo.exclusiveArea
+      Math.floor(dealInfo.exclusiveArea * 100) / 100
       }}</v-tab>
     </v-tabs>
 
@@ -194,13 +196,16 @@ const removeBookmark = function(){
         </div>
       </v-row>
     </v-window>
+  
 
-    <v-row><div id="roadview" style="width: 100%; height: 300px"></div></v-row>
-    <v-row> </v-row>
+   
   </v-container>
 </template>
 
 <style scoped>
+
+
+
 .table-container {
   width: 360px;
   overflow-y: auto;
