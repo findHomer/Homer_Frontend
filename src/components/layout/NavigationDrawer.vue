@@ -18,14 +18,14 @@ const userStore = useUserStore();
     margin-left="10px"
     elevation="0"
     width="400"
-    overflow-y="hidden"
+    
     v-model="drawer" 
     :disable-resize-watcher="true"
     floating 
     permanent="true"
-    class="rounded-xl pa-4"
+    class="rounded-xl pa-4 "
     :scrim="false">
-    <v-container  class="h-100 overflow-hidden">
+    <v-container  class="h-100 overflow-auto">
     <v-row>
     <v-card class="search-box">
       <SearchBarComponent/>
@@ -81,11 +81,11 @@ const userStore = useUserStore();
 }
 
 .scrollable-content {
-  overflow-y: auto; /* 세로 스크롤 가능 */
+  
   height: 100%; /* 전체 높이 설정 */
   font-family: 'Noto Sans KR', sans-serif;
   text-align:center;
- 
+  box-sizing: border-box;
 }
 
 /*전체 페이지의 스크롤바 스타일*/

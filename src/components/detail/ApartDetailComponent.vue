@@ -145,10 +145,10 @@ const removeBookmark = function(){
 </script>
 
 <template>
-  <v-container>
+  <v-container style='box-sizing: border-box;'>
     <v-row>
       <v-col cols=10 class="font-weight-black text-center font-weight-large">{{ aptName }}</v-col>
-      <v-col cols=2>
+      <v-col v-if="!store.menuList[0].show" cols=2>
         <v-img v-if="bookmark" width="60px" src="/src/assets/bookmark_picked.png" @click="removeBookmark"></v-img>
         <v-img v-if="!bookmark" width="60px" src="/src/assets/bookmark.png" @click="addBookmark"></v-img>
     </v-col>
@@ -160,7 +160,7 @@ const removeBookmark = function(){
 
     
     <v-row class='mt-8 mb-4'  style ='justify-content: center;'>면적별(m&sup2)</v-row>
-    <v-tabs v-model="tab" color="#92A3DB" show-arrows >
+    <v-tabs v-model="tab" color="#92A3DB" show-arrows align-tabs="center">
       <v-tab v-for="(dealInfo, index) in dealInfos" :key="index">{{
       Math.floor(dealInfo.exclusiveArea * 100) / 100
       }}</v-tab>
@@ -170,8 +170,6 @@ const removeBookmark = function(){
           <Line  :data="chartData" :options="options" />
       </v-row>
 
-   
-      <v-divider class= 'mt-4 mb-4'></v-divider>
       
       <v-row  style ='justify-content: center;' v-if="dealInfos.length > 0 && dealInfos[tab]">
         
@@ -197,16 +195,16 @@ const removeBookmark = function(){
         
       </v-row>
 
-      
-    
-  
-    <v-row v-for="(group, index) in filteredItems" :key="index">
+      <v-divider class= 'mt-4 mb-4'></v-divider>
+
+      <v-row style ="justify-content:center ;" v-for="(group, index) in filteredItems" :key="index">
       <v-col v-for="item in group" :key="item[0]">
         {{ item[1] }}
       </v-col>
-      <v-divider v-if="index%2==0" vertical></v-divider>
+      <v-divider vertical></v-divider>
     </v-row>
-   
+    
+  
   </v-container>
 </template>
 

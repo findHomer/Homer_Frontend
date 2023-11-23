@@ -32,7 +32,8 @@ const tickLabelsHouse = ref({
 
 const store = useSearchStore();
 const {searchDto,clicked} = storeToRefs(store);
-
+const parkPerHouse = ref(0);
+const householdCount = ref(0);
 const searchApart = function () {
     const code = selectedSido.value + selectedSigungu.value + selectedDongupri.value
     store.searchNameDto.dongCode = code
@@ -44,7 +45,10 @@ const searchApart = function () {
 }
 
 const filterSearch = function () {
+    searchDto.value.parkPerHouse=parkPerHouse;
+    searchDto.value.householdCount = householdCount;
     clicked.value = !clicked.value;
+    
 }
 
 const clickBtn = function (btn) {
@@ -176,7 +180,7 @@ onMounted(async () => {
     >
 
     <div v-if="selectedButton=='carCount'">
-      <v-row><v-slider class="mt-4" @end="filterSearch" thumb-label="always" color = #92A3DB  show-ticks="always" :ticks="tickLabelsPark" v-model="searchDto.parkPerHouse" min=0 max=3 step=0.1></v-slider>
+      <v-row><v-slider class="mt-4" @end="filterSearch" thumb-label="always" color = #92A3DB  show-ticks="always" :ticks="tickLabelsPark" v-model="parkPerHouse" min=0 max=3 step=0.1></v-slider>
         <template v-slot:thumb-label="{ modelValue }">
           {{ modelValue  }}
         </template>
@@ -211,10 +215,8 @@ onMounted(async () => {
     </div>
     <div  v-if="selectedButton=='householdCount'">
       
-      <v-row><v-slider  class="mt-4" @end="filterSearch" color = #92A3DB  thumb-label="always"  show-ticks="always" :ticks="tickLabelsHouse" v-model="searchDto.householdCount" min=0 max=1000 step=10></v-slider>
-        <template v-slot:thumb-label="{ modelValue }">
-          {{ modelValue  }}
-        </template>
+      <v-row><v-slider  class="mt-4" @end="filterSearch" color = #92A3DB  thumb-label="always"  show-ticks="always" :ticks="tickLabelsHouse" v-model="householdCount" min=0 max=1000 step=10></v-slider>
+        
     </v-row>
     </div>
   </v-container>
