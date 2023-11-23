@@ -65,7 +65,7 @@ const chartData = computed(() => {
 });
 
 const options = ref({
-  responsive: true,
+  responsive: false,
   maintainAspectRatio: false,
 });
 const items = ref({
@@ -87,14 +87,14 @@ watch(aptId, async () => {
   aptName.value = response.data.aptName;
   items.value.aisleType = response.data.aisleType;
   items.value.maxFloor = response.data.maxFloor
-    ? "최고" + response.data.maxFloor + "층"
+    ? "최고 " + response.data.maxFloor + "층"
     : "";
   items.value.householdCount = response.data.householdCount
     ? response.data.householdCount + "세대"
     : "";
   items.value.dongCount = response.data.dongCount ? response.data.dongCount + "동" : "";
   items.value.parkPerHouse = response.data.parkPerHouse
-    ? "세대당" + response.data.parkPerHouse + "대"
+    ? "세대당 " + response.data.parkPerHouse + "대"
     : "";
   const userEmail = token.value ? jwtDecode(token.value).sub : null;
   bookmark.value = false;
@@ -156,36 +156,37 @@ const removeBookmark = function(){
     <v-row><div id="roadview" style="width: 100%; height: 300px"></div></v-row>
     
    
-    <v-row v-for="(group, index) in filteredItems" :key="index">
-      <v-col v-for="item in group" :key="item[0]">
-        {{ item[1] }}
-      </v-col>
-    </v-row>
+   
 
     
-    <v-row>면적별(m^2)</v-row>
-    <v-tabs v-model="tab" color="#92A3DB" align-tabs="center">
+    <v-row class='mt-8 mb-4'  style ='justify-content: center;'>면적별(m&sup2)</v-row>
+    <v-tabs v-model="tab" color="#92A3DB" show-arrows >
       <v-tab v-for="(dealInfo, index) in dealInfos" :key="index">{{
       Math.floor(dealInfo.exclusiveArea * 100) / 100
       }}</v-tab>
     </v-tabs>
-
-    <v-window v-model="tab">
-      <v-row>
-        <Line :data="chartData" :options="options" />
+   
+      <v-row class="mt-6" style ='justify-content: center;'>
+          <Line  :data="chartData" :options="options" />
       </v-row>
 
-      <v-row v-if="dealInfos.length > 0 && dealInfos[tab]">
-        <div class="table-container">
-          <v-table height="280px">
+   
+      <v-divider class= 'mt-4 mb-4'></v-divider>
+      
+      <v-row  style ='justify-content: center;' v-if="dealInfos.length > 0 && dealInfos[tab]">
+        
+          <v-table 
+            fixed-header 
+            height="280px"
+            >
             <thead>
               <tr>
-                <th class="text-left">거래날짜</th>
-                <th class="text-left">거래금액(만원)</th>
-                <th class="text-left">층</th>
+                <th class="text-center">거래날짜</th>
+                <th class="text-center">거래금액(만원)</th>
+                <th class="text-center">층</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody class="table-container">
               <tr v-for="item in dealInfos[tab].apartDealDto" :key="item.dealId">
                 <td>{{ item.transactionDate }}</td>
                 <td>{{ item.transactionAmount }}</td>
@@ -193,19 +194,22 @@ const removeBookmark = function(){
               </tr>
             </tbody>
           </v-table>
-        </div>
+        
       </v-row>
-    </v-window>
-  
 
+      
+    
+  
+    <v-row v-for="(group, index) in filteredItems" :key="index">
+      <v-col v-for="item in group" :key="item[0]">
+        {{ item[1] }}
+      </v-col>
+      <v-divider v-if="index%2==0" vertical></v-divider>
+    </v-row>
    
   </v-container>
 </template>
 
 <style scoped>
 
-.table-container {
-  width: 360px;
-  overflow-y: auto;
-}
 </style>

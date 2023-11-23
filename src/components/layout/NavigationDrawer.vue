@@ -32,8 +32,8 @@ const userStore = useUserStore();
     </v-card>
     </v-row>
 
-    <v-row v-if="userStore.aptId!=''" class ="mt-6 scrollable-content">
-    <v-card >
+    <v-row v-show="userStore.aptId!=''" class ="mt-6 scrollable-content">
+    <v-card class="detail-card">
       <v-tabs
         v-model="tab"
         color="#92A3DB"
@@ -67,19 +67,17 @@ const userStore = useUserStore();
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap');
-/* ::v-deep .scrollable-content{
-  font-family: 'Noto Sans KR', sans-serif;
-}
 
-::v-deep .scrollable-content{
-  font-family: 'Noto Sans KR', sans-serif;
-} */
 
 .search-box {
   position: sticky;
   top: 0; /* 상단에 고정 */
   z-index: 100; /* 다른 요소들보다 위에 보이도록 */
   font-family: 'Noto Sans KR', sans-serif;
+  width:400px;
+}
+.detail-card{
+  width:400px;
 }
 
 .scrollable-content {
@@ -87,6 +85,7 @@ const userStore = useUserStore();
   height: 100%; /* 전체 높이 설정 */
   font-family: 'Noto Sans KR', sans-serif;
   text-align:center;
+ 
 }
 
 /*전체 페이지의 스크롤바 스타일*/

@@ -19,8 +19,8 @@ export const useUserStore = defineStore('userStore', () => {
     const searchDto = ref({
         "aptName": '',
         "aisleType": '',
-        "householdCount": '0',
-        "parkPerHouse": '0',
+        "householdCount": 0,
+        "parkPerHouse": 0,
     })
     const aptId= ref('');
 
