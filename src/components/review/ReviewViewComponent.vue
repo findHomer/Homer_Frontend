@@ -8,8 +8,8 @@ import { storeToRefs } from "pinia";
 
 import { jwtDecode } from "jwt-decode";
 import { token , useUserStore } from "@/components/stores/user-store"
-
-const userEmail = token.value ? jwtDecode(token.value).sub : null;
+console.log(token);
+const userEmail = computed(() => { return token.value ? jwtDecode(token.value).sub : null });
 const store = useUserStore();
 const reviews = ref([]);
 
