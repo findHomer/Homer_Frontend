@@ -6,7 +6,7 @@
 const props = defineProps({
   profileUrl: String,
   name: String,
-  content: String,
+  message: String,
 });
 </script>
 
@@ -26,7 +26,7 @@ const props = defineProps({
           <v-col>
             <v-card class="chat-bubble pa-3" >
             <span>
-              {{ props.content }}
+              {{ props.message }}
             </span>
             </v-card>
           </v-col>

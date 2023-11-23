@@ -1,7 +1,8 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-
+import {getMyInfo} from "@/api/chat"
 export const useChatInfoStore = defineStore('chat', () => {
+    const myInfo = ref({});
 
     const chats = ref([]);
     const notification = ref({
@@ -18,6 +19,18 @@ export const useChatInfoStore = defineStore('chat', () => {
 
     } 
 
-  return { chats,notification, sendMessage, receiveMessage }
+    const updatedInfo = () => {
+        getMyInfo(
+            (response) =>
+            {
+              myInfo.value = response.data
+              console.log(response.data);
+            },(error) => {
+              console.log(error);
+            }
+        )
+    }
+
+  return { chats,notification, myInfo, sendMessage, receiveMessage, updatedInfo }
 })
 
