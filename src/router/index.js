@@ -8,8 +8,15 @@ const router = createRouter({
       path: '/',
       name: 'main',
       component: MainView,
+      
+      children :[
+        {
+          path:'mypage',
+          name:'myPage',
+          component: () => import("@/views/MyPageView.vue")
+        }
+      ]
     },
-    
   ]
 })
 
